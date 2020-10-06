@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "5Eypkv8Vj6kTA/J7K5eOfJ4Ouio+FnuW/yfD7wPDKfJAw0CsDLIqdTKeg/mluGKJ+ralFzQZqZhfss1R0xeZzQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\jonas\\Documents\\github\\CMR-Mailing-Platform\\CRM Mailing Platform\\CRM Mailing Platform Model Library\\CRM Mailing Platform Model Library.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\jonas\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\jonas\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

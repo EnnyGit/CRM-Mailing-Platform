@@ -1,6 +1,7 @@
 public class Client
 {
-	public int KlantId;
+	private int klantId;
+	public int KlantId { get { return klantId; } }
 
 	public int[] Contacts;
 

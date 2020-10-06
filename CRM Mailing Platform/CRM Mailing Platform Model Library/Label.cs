@@ -1,6 +1,7 @@
 public class Label
 {
-	public int LabelId;
+	private int labelId;
+	public int LabelId { get { return labelId; } }
 
 	public string Name;
 

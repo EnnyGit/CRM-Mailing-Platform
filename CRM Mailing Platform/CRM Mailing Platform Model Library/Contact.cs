@@ -1,6 +1,9 @@
+using System.Net;
+
 public class Contact
 {
-	public int ContactId;
+	private int contactId;
+	public int ContactId { get { return contactId; } }
 
 	public int[] Labels;
 

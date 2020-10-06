@@ -1,6 +1,7 @@
 public class Email
 {
-	public int MailId;
+	private int mailId;
+	public int MailId { get { return mailId; } }
 
 	public User Sender;
 

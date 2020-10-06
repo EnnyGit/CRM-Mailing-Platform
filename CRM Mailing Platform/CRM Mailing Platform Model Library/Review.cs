@@ -1,8 +1,9 @@
 public class Review
 {
-	public int ReviewId;
+	private int reviewId;
+	public int ReviewId { get { return reviewId; } }
 
-	public boolean Read;
+	public bool Read;
 
 	public string Content;
 

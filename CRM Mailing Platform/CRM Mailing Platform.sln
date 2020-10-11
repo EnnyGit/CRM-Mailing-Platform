@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM Mailing Platform", "CRM Mailing Platform\CRM Mailing Platform.csproj", "{3AD6BC88-7897-4E48-AAD3-9FE281CC30BA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRM Mailing Platform Model Library", "CRM Mailing Platform Model Library\CRM Mailing Platform Model Library.csproj", "{8773A7A9-1E18-4C4E-BFEC-FBFEEA659C2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRM Mailing Platform", "CRM Mailing Platform.csproj", "{097E9628-C645-41ED-980E-6567CBB94A32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3AD6BC88-7897-4E48-AAD3-9FE281CC30BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3AD6BC88-7897-4E48-AAD3-9FE281CC30BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3AD6BC88-7897-4E48-AAD3-9FE281CC30BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3AD6BC88-7897-4E48-AAD3-9FE281CC30BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8773A7A9-1E18-4C4E-BFEC-FBFEEA659C2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8773A7A9-1E18-4C4E-BFEC-FBFEEA659C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8773A7A9-1E18-4C4E-BFEC-FBFEEA659C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8773A7A9-1E18-4C4E-BFEC-FBFEEA659C2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{097E9628-C645-41ED-980E-6567CBB94A32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{097E9628-C645-41ED-980E-6567CBB94A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{097E9628-C645-41ED-980E-6567CBB94A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{097E9628-C645-41ED-980E-6567CBB94A32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {5B9970E1-D093-4078-8FEB-5BD953CD8282}
+		SolutionGuid = {A59C30CC-D8FC-49E4-8024-D01A2A81AE7A}
 	EndGlobalSection
 EndGlobal

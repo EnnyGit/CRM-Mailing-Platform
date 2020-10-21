@@ -1,0 +1,25 @@
+﻿<h3>EmailHistory</h3>
+
+<table>
+    <tr>
+        <th>Subject</th>
+        <th>Sender</th>
+        <th>Recipients</th>
+        <th>Date</th>
+        <th>Time</th>
+    </tr>
+    @foreach(int i in Emails)
+    {
+        <tr>
+            <th>@i</th>
+            <th>@i</th>
+            <th>@i</th>
+            <th>@i</th>
+            <th>@i</th>
+        </tr>
+    }
+</table>
+
+@code {
+    public int[] Emails = new int[5] { 1,2,3,4,5};
+}

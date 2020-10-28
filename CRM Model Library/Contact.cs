@@ -14,9 +14,17 @@ public class Contact
 
 	public List<Client> Clients;
 
-	private Label label;
 
-	private Client client;
+	public Contact(int id, List<Label> labels,string eaddress,string fname,string lname,List<Client> clients)
+    {
+		ContactId = id;
+		Labels = labels;
+		EmailAddress = eaddress;
+		FirstName = fname;
+		LastName = lname;
+		Clients = clients;
+    }
+
 
 }
 

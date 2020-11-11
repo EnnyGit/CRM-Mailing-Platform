@@ -1,25 +1,45 @@
 ﻿<h3>EmailHistory</h3>
 
-<table>
-    <tr>
-        <th>Subject</th>
-        <th>Sender</th>
-        <th>Recipients</th>
-        <th>Date</th>
-        <th>Time</th>
-    </tr>
-    @foreach(int i in Emails)
-    {
+<table class="table">
+    <thead>
         <tr>
-            <th>@i</th>
-            <th>@i</th>
-            <th>@i</th>
-            <th>@i</th>
-            <th>@i</th>
+            <th scope="col">#</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Sender</th>
+            <th scope="col">Recipients</th>
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (int i in Emails)
+        {
+            <tr>
+                
+                <th scope="row">@i</th>
+                <td>@i</td>
+                <td>@i</td>
+                <td>@i</td>
+                <td>@i</td>
+                <td>00:00</td>
+            </tr>
+        }
+    </tbody>
 </table>
 
 @code {
+    User u1 = new User
+    {
+        EmailAddress = "jonasdeboer02@gmail.com",
+        FirstName = "Jonas",
+        LastName = "de Boer",
+        UserId = 1,
+        UserName = "0983180"
+    };
+    Email e1 = new Email
+    {
+        MailId = 1,
+        Sender = new User { }
+    };
     public int[] Emails = new int[5] { 1,2,3,4,5};
 }

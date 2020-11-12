@@ -1,4 +1,6 @@
-﻿<h3>EmailHistory</h3>
+﻿@page "/EmailHistory"
+@inherits EmailHistoryBase
+<h3>EmailHistory</h3>
 
 <table class="table">
     <thead>
@@ -12,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (int i in Emails)
+        @foreach (int i in new List<int> { 1,2,3,4})
         {
             <tr>
                 
@@ -27,19 +29,4 @@
     </tbody>
 </table>
 
-@code {
-    User u1 = new User
-    {
-        EmailAddress = "jonasdeboer02@gmail.com",
-        FirstName = "Jonas",
-        LastName = "de Boer",
-        UserId = 1,
-        UserName = "0983180"
-    };
-    Email e1 = new Email
-    {
-        MailId = 1,
-        Sender = new User { }
-    };
-    public int[] Emails = new int[5] { 1,2,3,4,5};
-}
+

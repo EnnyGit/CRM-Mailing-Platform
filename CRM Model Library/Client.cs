@@ -2,18 +2,13 @@ using System.Collections.Generic;
 
 public class Client
 {
-	public int ClientId;
+	public int ClientId { get; set; }
 
-	public List<Contact> Contacts;
+	
 
-	public string Name;
+	public string Name { get; set; }
 
-	public Client(int id,List<Contact> contacts,string name)
-    {
-		ClientId = id;
-		Contacts = contacts;
-		Name = name;
-    }
+	
 
 }
 

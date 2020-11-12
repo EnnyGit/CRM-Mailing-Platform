@@ -1,24 +1,16 @@
 public class User
 {
-	public int UserId;
-	public string FirstName;
+	public int UserId { get; set; }
+	public string FirstName { get; set; }
 
-	public string LastName;
+	public string LastName { get; set; }
 
-	public string UserName;
+	public string UserName { get; set; }
 
-	protected string PassWord;
+	protected string PassWord { get; set; }
 
-	public string EmailAddress;
+	public string EmailAddress { get; set; }
 
-	public User(int id,string fname,string lname, string uname,string pw,string eaddress)
-    {
-		UserId = id;
-		FirstName = fname;
-		LastName = lname;
-		UserName = uname;
-		PassWord = pw;
-		EmailAddress = eaddress;
-    }
+	
 }
 

@@ -2,28 +2,20 @@ using System.Collections.Generic;
 
 public class Contact
 {
-	public int ContactId;
+	public int ContactId { get; set; }
 
-	public List<Label> Labels;
+	public List<Label> Labels { get; set; }
 
-	public string EmailAddress;
+	public string EmailAddress { get; set; }
 
-	public string FirstName;
+	public string FirstName { get; set; }
 
-	public string LastName;
+	public string LastName { get; set; }
 
-	public List<Client> Clients;
+	public List<Client> Clients { get; set; }
 
 
-	public Contact(int id, List<Label> labels,string eaddress,string fname,string lname,List<Client> clients)
-    {
-		ContactId = id;
-		Labels = labels;
-		EmailAddress = eaddress;
-		FirstName = fname;
-		LastName = lname;
-		Clients = clients;
-    }
+	
 
 
 }

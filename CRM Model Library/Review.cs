@@ -1,19 +1,13 @@
 public class Review
 {
-	public int ReviewId;
+	public int ReviewId { get; set; }
 
-	public bool Read;
+	public bool Read { get; set; }
 
-	public string Content;
+	public string Content { get; set; }
 
-	public Contact Contact;
+	public Contact Contact { get; set; }
 
-	public Review(int id, bool read, string content, Contact contact)
-    {
-        ReviewId = id;
-		Read = read;
-        Content = content;
-        Contact = contact;
-    }
+	
 }
 

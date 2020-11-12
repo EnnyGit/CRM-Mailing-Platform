@@ -1,13 +1,9 @@
 public class Label
 {
-	public int LabelId;
+	public int LabelId { get; set; }
 
-	public string Name;
+	public string Name { get; set; }
 
-	public Label(int id, string name)
-    {
-		LabelId = id;
-		Name = name;
-    }
+	
 }
 

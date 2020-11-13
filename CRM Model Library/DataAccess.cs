@@ -32,7 +32,7 @@ namespace CRM_Model_Library
         /// Returns a List of Type T models.
         /// </returns>
 
-        public static List<T> LoadData<T, U>(string sql, U parameters, string connectionString)
+        public List<T> LoadData<T, U>(string sql, U parameters, string connectionString)
         {
             // Opens a connection to our Database, it does it in a Using statement so that when
             // we're done it will close it properly.
@@ -45,7 +45,15 @@ namespace CRM_Model_Library
                 // Return is seperated from the query, because it will be easier to debug.
                 return rows;
             }
+        }
 
+        public void SaveData<T>(string sql, T parameters, string connectionString)
+        {
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                // Executes the SQL string.
+                connection.Execute(sql, parameters);
+            }
         }
     }
 }

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRMProjectUI", "CRM Project\CRMProjectUI.csproj", "{2D3C5E0E-4719-472F-AA8D-7BA6F4E44603}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM Project", "CRM Project\CRM Project.csproj", "{2D3C5E0E-4719-472F-AA8D-7BA6F4E44603}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRMDataLibrary", "CRM Model Library\CRMDataLibrary.csproj", "{41D9A459-BEA8-492D-9177-B38EFAB734F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRM Model Library", "CRM Model Library\CRM Model Library.csproj", "{41D9A459-BEA8-492D-9177-B38EFAB734F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRM_Blazor_Server", "CRM_Blazor_Server\CRM_Blazor_Server.csproj", "{0701E880-A409-44E3-B9CE-80A425DC08B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{41D9A459-BEA8-492D-9177-B38EFAB734F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41D9A459-BEA8-492D-9177-B38EFAB734F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41D9A459-BEA8-492D-9177-B38EFAB734F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0701E880-A409-44E3-B9CE-80A425DC08B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0701E880-A409-44E3-B9CE-80A425DC08B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0701E880-A409-44E3-B9CE-80A425DC08B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0701E880-A409-44E3-B9CE-80A425DC08B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

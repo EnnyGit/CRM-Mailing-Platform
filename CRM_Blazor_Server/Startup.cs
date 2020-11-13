@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CRM_Model_Library;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +27,8 @@ namespace CRM_Blazor_Server
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            // TODO: Uitzoeken welke service wij moeten gebruiken. Inplaats  van "AddSingleton"
+            services.AddSingleton<IDataAccess, DataAccess>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

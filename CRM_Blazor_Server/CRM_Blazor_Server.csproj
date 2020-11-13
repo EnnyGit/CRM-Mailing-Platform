@@ -8,4 +8,8 @@
     <Folder Include="Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CRM Model Library\CRM Model Library.csproj" />
+  </ItemGroup>
+
 </Project>

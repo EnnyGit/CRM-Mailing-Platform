@@ -12,10 +12,10 @@ public class Contact
 
 	public string LastName;
 
-	public List<Client> Clients;
+	public List<ClientModel> Clients;
 
 
-	public Contact(int id, List<Label> labels,string eaddress,string fname,string lname,List<Client> clients)
+	public Contact(int id, List<Label> labels,string eaddress,string fname,string lname,List<ClientModel> clients)
     {
 		ContactId = id;
 		Labels = labels;

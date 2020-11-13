@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CRM Model Library\CRM Model Library.csproj" />
+    <ProjectReference Include="..\CRM Model Library\CRMDataLibrary.csproj" />
   </ItemGroup>
 
 </Project>

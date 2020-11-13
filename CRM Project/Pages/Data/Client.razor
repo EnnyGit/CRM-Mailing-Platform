@@ -1,0 +1,46 @@
+﻿@page "/Data/Clients"
+
+@using CRMDataLibrary
+@using CRMDataLibrary.Models
+
+@inject IClientData _db 
+
+<h1>Client Page</h1>
+
+<h4>Current Clients</h4>
+@if (clients is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in clients)
+            {
+                <tr>
+                    <td>@client.FirstName</td>
+                    <td>@client.LastName</td>
+                    <td>@client.EmailAddress</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private List<ClientModel> clients;
+
+    protected override async Task OnInitializedAsync()
+    {
+        clients = await _db.GetClients();
+    }
+}

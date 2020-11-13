@@ -25,5 +25,9 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
+  },
+
+  "ConnectionString": {
+    "Default": "Data Source=DESKTOP-8H4J9V8;Initial Catalog=CRM;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
   }
 }

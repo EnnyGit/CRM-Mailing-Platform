@@ -12,6 +12,6 @@ public class EmailModel
 
     public TemplateModel Template { get; set; }
 
-
+    public string subject { get; set; }
 }
 

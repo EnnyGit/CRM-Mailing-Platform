@@ -1,0 +1,29 @@
+﻿@page "/manage/labels"
+<h3>Labels</h3>
+<ul class="nav nav-pills nav-justified">
+    <li class="nav-item">
+        <a class="nav-link" href="manage/contacts">Contacts</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="manage/clients">Clients</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="manage/templates">Templates</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="manage/labels">Labels</a>
+    </li>
+</ul>
+<ul>
+    @foreach (var label in labels)
+    {
+        <li class="card" style="min-width: 18rem; max-width:30.5%;">
+            <div>
+                <h3>@label.Name</h3>
+            </div>
+        </li>
+    }
+</ul>
+@code {
+    List<LableModel> labels = new List<LableModel> { new LableModel { LabelId = 1, Name = "Programmer" },new LableModel { LabelId = 2,Name = "Designer"},new LableModel { LabelId = 3, Name = "Consultant" } };
+}

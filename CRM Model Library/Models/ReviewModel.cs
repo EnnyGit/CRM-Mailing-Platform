@@ -6,7 +6,7 @@ public class ReviewModel
 
 	public string Content { get; set; }
 
-	public ContactModel Contact { get; set; }
+	public int ContactId { get; set; }
 
 
 }

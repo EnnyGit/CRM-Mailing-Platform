@@ -13,7 +13,11 @@ a, .btn-link {
     background-color: #1b6ec2;
     border-color: #1861ac;
 }
-
+.btn-manage {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
 app {
     position: relative;
     display: flex;
@@ -47,7 +51,7 @@ app {
 }
 
 .sidebar {
-    background-image: linear-gradient(180deg,#000000 0%, #290001 70%);
+    background-color: black;
 }
 
     .sidebar .top-row {
@@ -179,5 +183,8 @@ app {
     .sidebar .collapse {
         /* Never collapse the sidebar for wide screens */
         display: block;
+    }
+    .card-deck {
+
     }
 }

@@ -1,4 +1,7 @@
 ﻿@page "/manage/contacts"
+<div style="align-items:end; float:right;">
+    <a class="btn btn-primary" href="manage/contacts/create" role="button">Create</a>
+</div>
 <h3>Contacts</h3>
 
 <ul class="nav nav-pills nav-justified">
@@ -8,14 +11,140 @@
     <li class="nav-item">
         <a class="nav-link" href="manage/clients">Clients</a>
     </li>
+    
     <li class="nav-item">
-        <a class="nav-link" href="manage/templates">Templates</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="manage/labels">Labels</a>
+        <a class="nav-link" href="manage/lables">lables</a>
     </li>
 </ul>
-
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Lastname</th>
+            <th scope="col">Firstname</th>
+            <th scope="col">Email address</th>
+            <th scope="col">Clients</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var model in Contacts)
+        {
+            <tr>
+                <th scope="row">@model.ModelId</th>
+                <td>@model.LastName</td>
+                <td>@model.FirstName</td>
+                <td>@model.EmailAddress</td>
+                <td>
+                    <ul>
+                    @foreach(var client in GetClientsByContacts(model))
+                    {
+                        <li>@client.Name</li>
+                    }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 @code {
+    List<ContactModel> Contacts = new List<ContactModel>
+    {
+        new ContactModel
+        {
+            ModelId = 1,
+            FirstName = "Jonas",
+            LastName = "de Boer",
+            EmailAddress = "jonasdeboer@gmail.com"
+        },
+        new ContactModel
+        {
+            ModelId = 2,
+            FirstName = "Enny",
+            LastName = "Adeoye",
+            EmailAddress = "ennyadeaoye@gmail.com"
+        },
+        new ContactModel
+        {
+            ModelId = 3,
+            FirstName = "Ilias",
+            LastName = "el Bouchtaoui",
+            EmailAddress = "iliaselbouchtaoui@gmail.com"
+        },
+        new ContactModel
+        {
+            ModelId = 4,
+            FirstName = "Ali",
+            LastName = "Aliawi",
+            EmailAddress = "alialiawi@gmail.com"
+        },
+        new ContactModel
+        {
+            ModelId = 5,
+            FirstName = "Dennis",
+            LastName = "Futselaar",
+            EmailAddress = "dennisfutselaar@gmail.com"
+        }
+    };
+    List<ClientModel> Clients = new List<ClientModel>
+    {
+        new ClientModel
+        {
+            ClientId = 1,
+            Name = "Microsoft"
+        },
+        new ClientModel
+        {
+            ClientId = 2,
+            Name = "Apple"
+        },
+        new ClientModel
+        {
+            ClientId = 3,
+            Name = "Tesla"
+        }
 
+    };
+    List<ClientContactLink> CCLinks = new List<ClientContactLink>
+    {
+        new ClientContactLink
+        {
+            ClientId = 1,
+            ContactId = 5
+        },
+        new ClientContactLink
+        {
+            ClientId = 2,
+            ContactId = 4
+        },
+        new ClientContactLink
+        {
+            ClientId = 3,
+            ContactId = 3
+        },
+        new ClientContactLink
+        {
+            ClientId = 3,
+            ContactId = 2
+        },
+        new ClientContactLink
+        {
+            ClientId = 2,
+            ContactId = 1
+        },
+        new ClientContactLink
+        {
+            ClientId = 1,
+            ContactId = 1
+        }
+    };
+    public List<ClientModel> GetClientsByContacts(ContactModel contact)
+    {
+
+
+        List<ClientContactLink> links = CCLinks.Where(link => link.ContactId == contact.ModelId).ToList();
+        List<int> clientids = links.Select(link => link.ClientId).ToList();
+        List<ClientModel> res = Clients.Where(client => clientids.Contains(client.ClientId)).ToList();
+
+        return res;
+    }
 }

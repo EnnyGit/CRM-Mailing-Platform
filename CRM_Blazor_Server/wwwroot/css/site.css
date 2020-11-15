@@ -184,7 +184,28 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
-    .card-deck {
+    .model-group{
+        height: 80vh;
+    }
+    .model-item {
+        float: left;
+        width: 22%;
+        margin: 1%;
+        border-style: groove;
+        height: 20%;
+        position: relative;
+    }
 
+    .lable-model-title {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left:50%;
+        -ms-transform: translate(-50%,-50%);
+        transform: translate(-50%,-50%);
+    }
+    .model-title{
+        font-size: 30px;
+        font-size: 1vw*1vh;
     }
 }

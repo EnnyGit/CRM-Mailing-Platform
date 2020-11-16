@@ -31,6 +31,7 @@ namespace CRM_Blazor_Server
             // Transient is gonna create an instance everytime we ask for one, Singleton creates one instance for the entire application.
             services.AddSingleton<IDataAccess, DataAccess>();
             services.AddTransient<IClientData, ClientData>();
+            services.AddTransient<IUserData, UserData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

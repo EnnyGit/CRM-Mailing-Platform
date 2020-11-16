@@ -4,7 +4,7 @@ public class Email
 {
 	public int MailId;
 
-	public User Sender;
+	public UserModel Sender;
 
 	public List<Contact> Sent;
 
@@ -12,7 +12,7 @@ public class Email
 
 	public Template Template;
 
-	public Email(int id,User sender,List<Contact> sent, List<Contact> read,Template temp)
+	public Email(int id,UserModel sender,List<Contact> sent, List<Contact> read,Template temp)
     {
 		MailId = id;
 		Sender = sender;

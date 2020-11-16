@@ -1,30 +1,10 @@
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-public class Contact
+namespace CRM_Model_Library.Models
 {
-	public int ContactId;
-
-	public List<Label> Labels;
-
-	public string EmailAddress;
-
-	public string FirstName;
-
-	public string LastName;
-
-	public List<ClientModel> Clients;
-
-
-	public Contact(int id, List<Label> labels,string eaddress,string fname,string lname,List<ClientModel> clients)
+    class Contact
     {
-		ContactId = id;
-		Labels = labels;
-		EmailAddress = eaddress;
-		FirstName = fname;
-		LastName = lname;
-		Clients = clients;
     }
-
-
 }
-

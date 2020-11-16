@@ -1,0 +1,34 @@
+﻿@page "/manage/contacts/create"
+<h3>Create Contact</h3>
+<EditForm Model="contact" OnSubmit="Create">
+    <div class="form-group">
+        <lable>First name:</lable>
+    </div>
+    <div>
+        <InputText class="form-control" @bind-Value="@contact.FirstName"></InputText>
+    </div>
+    <div class="form-group">
+        <lable>Last name:</lable>
+    </div>
+    <div>
+        <InputText class="form-control" @bind-Value="@contact.LastName"></InputText>
+    </div>
+    <div class="form-group">
+        <lable>Email address:</lable>
+    </div>
+    <div>
+        <InputText class="form-control" @bind-Value="@contact.EmailAddress"></InputText>
+    </div>
+    <div>
+        <a href="manage/contacts" class="btn btn-success" type="submit">Create Contact</a>
+    </div>
+</EditForm>
+@code {
+    ContactModel contact = new ContactModel();
+
+    private void Create()
+    {
+
+        return;
+    }
+}

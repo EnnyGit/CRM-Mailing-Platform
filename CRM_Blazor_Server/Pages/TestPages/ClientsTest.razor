@@ -5,7 +5,7 @@
     Injecting the IDataAccess service from Startup.cs
     Injecting IConfiguration from appsetings.json
 *@
-@inject IDataAccess _data 
+@inject IDataAccess _db 
 @inject IConfiguration _config
 
 <h3>ClientsTest</h3>
@@ -35,7 +35,7 @@ else
     {
         string sql = "INSERT INTO client(Id, FirstName, LastName, Email) VALUES(@Id, @FirstName, @LastName, @Email);";
 
-        await _data.SaveData(sql, new { Id = "6", FirstName = "Billy", LastName = "Bob", Email = "Billybob@gmail,com" }, _config.GetConnectionString("default"));
+        await _db.SaveData(sql, new { Id = "6", FirstName = "Billy", LastName = "Bob", Email = "Billybob@gmail,com" });
 
         await OnInitializedAsync();
     }
@@ -44,7 +44,7 @@ else
     {
         string sql = "UPDATE client SET FirstName = @FirstName WHERE LastName = @LastName";
 
-        await _data.SaveData(sql, new { FirstName = "Enny", LastName = "Adeoye"}, _config.GetConnectionString("default"));
+        await _db.SaveData(sql, new { FirstName = "Enny", LastName = "Adeoye"});
 
         await OnInitializedAsync();
     }
@@ -53,7 +53,7 @@ else
     {
         string sql = "DELETE FROM client WHERE LastName = @LastName";
 
-        await _data.SaveData(sql, new { LastName = "Bob" }, _config.GetConnectionString("default"));
+        await _db.SaveData(sql, new { LastName = "Bob" });
 
         await OnInitializedAsync();
     }
@@ -62,6 +62,6 @@ else
     {
         string sql = "SELECT * FROM client";
 
-        clients = await _data.LoadData<ClientModel, dynamic>(sql, new { },  _config.GetConnectionString("default"));
+        clients = await _db.LoadData<ClientModel, dynamic>(sql, new { });
     }
 }

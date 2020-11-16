@@ -1,0 +1,74 @@
+﻿@page "/Data/Clients"
+
+@using CRM_Model_Library
+@using CRM_Blazor_Server.ViewModels
+
+@inject IClientData _db
+
+
+<h3>Client Page</h3>
+
+<h4>Insert New Person</h4>
+<EditForm Model="@newClient" OnValidSubmit="@InsertClient">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="firstname" @bind-Value="newClient.FirstName" />
+    <InputText id="lastname" @bind-Value="newClient.LastName" />
+    <InputText id="email" @bind-Value="newClient.Email" />
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+<h4>Current Clients</h4>
+@if (clients is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thread>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email Address</th>
+            </tr>
+        </thread>
+        <tbody>
+            @foreach (var client in clients)
+            {
+                <tr>
+                    <td>@client.FirstName</td>
+                    <td>@client.LastName</td>
+                    <td>@client.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private List<ClientModel> clients;
+    private DisplayClientModel newClient = new DisplayClientModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        clients = await _db.GetClients();
+    }
+
+    private async Task InsertClient()
+    {
+        ClientModel c = new ClientModel
+        {
+            FirstName = newClient.FirstName,
+            LastName = newClient.LastName,
+            Email = newClient.Email
+        };
+
+        await _db.InsertClient(c);
+
+        clients.Add(c);
+
+        newClient = new DisplayClientModel();
+    }
+}

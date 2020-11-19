@@ -13,9 +13,7 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <InputText id="firstname" @bind-Value="newClient.FirstName" />
-    <InputText id="lastname" @bind-Value="newClient.LastName" />
-    <InputText id="email" @bind-Value="newClient.Email" />
+    <InputText id="firstname" @bind-Value="newClient.Name" />
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
@@ -39,9 +37,7 @@ else
             @foreach (var client in clients)
             {
                 <tr>
-                    <td>@client.FirstName</td>
-                    <td>@client.LastName</td>
-                    <td>@client.Email</td>
+                    <td>@client.Name</td>
                 </tr>
             }
         </tbody>
@@ -60,9 +56,7 @@ else
     {
         ClientModel c = new ClientModel
         {
-            FirstName = newClient.FirstName,
-            LastName = newClient.LastName,
-            Email = newClient.Email
+            Name = newClient.Name
         };
 
         await _db.InsertClient(c);

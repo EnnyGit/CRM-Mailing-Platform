@@ -47,35 +47,35 @@
     {
         new ContactModel
         {
-            ModelId = 1,
+            ContactId = 1,
             FirstName = "Jonas",
             LastName = "de Boer",
             EmailAddress = "jonasdeboer@gmail.com"
         },
         new ContactModel
         {
-            ModelId = 2,
+            ContactId = 2,
             FirstName = "Enny",
             LastName = "Adeoye",
             EmailAddress = "ennyadeaoye@gmail.com"
         },
         new ContactModel
         {
-            ModelId = 3,
+            ContactId = 3,
             FirstName = "Ilias",
             LastName = "el Bouchtaoui",
             EmailAddress = "iliaselbouchtaoui@gmail.com"
         },
         new ContactModel
         {
-            ModelId = 4,
+            ContactId = 4,
             FirstName = "Ali",
             LastName = "Aliawi",
             EmailAddress = "alialiawi@gmail.com"
         },
         new ContactModel
         {
-            ModelId = 5,
+            ContactId = 5,
             FirstName = "Dennis",
             LastName = "Futselaar",
             EmailAddress = "dennisfutselaar@gmail.com"
@@ -139,7 +139,7 @@
 
         List<ClientContactLink> links = CCLinks.Where(link => link.ClientId == client.ClientId).ToList();
         List<int> contactids = links.Select(link => link.ContactId).ToList();
-        List<ContactModel> res = Contacts.Where(contact => contactids.Contains(contact.ModelId)).ToList();
+        List<ContactModel> res = Contacts.Where(contact => contactids.Contains(contact.ContactId)).ToList();
 
         return res;
     }

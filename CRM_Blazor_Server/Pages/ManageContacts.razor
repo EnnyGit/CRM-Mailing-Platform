@@ -29,21 +29,28 @@
             <th scope="col">Clients</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var model in Contacts)
-        {
-            <tr>
-                <td scope="row">@model.LastName</td>
-                <td>@model.FirstName</td>
-                <td>@model.EmailAddress</td>
-                <td>
-                    <ul>
+    @if (Contacts == null)
+    {
+        <p>loading...</p>
+    }
+    else
+    {
+        <tbody>
+            @foreach (var model in Contacts)
+            {
+                <tr>
+                    <td scope="row">@model.LastName</td>
+                    <td>@model.FirstName</td>
+                    <td>@model.EmailAddress</td>
+                    <td>
+                        <ul>
                         
-                    </ul>
-                </td>
-            </tr>
-        }
-    </tbody>
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    }
 </table>
 @code {
     private List<ContactModel> Contacts;

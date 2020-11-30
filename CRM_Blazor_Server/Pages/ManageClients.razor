@@ -30,23 +30,28 @@
 
         </tr>
     </thead>
+    @if (Clients == null)
+    {
+        <p>loading...</p>
+    }
+    else
+    {
+        <tbody>
 
-    <tbody>
+            @foreach (var client in Clients)
+            {
+                <tr>
+                    <th scope="row">@client.Name</th>
+                    <td>
+                        <ul>
+                        </ul>
+                    </td>
+                </tr>
+            }
 
-        @foreach (var client in Clients)
-        {
-            <tr>
-                <th scope="row">@client.Name</th>
-                <td>
-                    <ul>
-                    </ul>
-                </td>
-            </tr>
-        }
-
-    </tbody>
-
-</table>
+        </tbody>
+    }
+    </table>
 
 @code {
     private List<ClientModel> Clients;

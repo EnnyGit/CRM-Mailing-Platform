@@ -1,10 +1,9 @@
-﻿@page "/Data/Users"
+﻿@page "/users"
 
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
 
 @inject IUserData _db
-
 
 <h3>User Page</h3>
 
@@ -16,6 +15,7 @@
     <InputText id="firstname" @bind-Value="newUser.FirstName" />
     <InputText id="lastname" @bind-Value="newUser.LastName" />
     <InputText id="email" @bind-Value="newUser.EmailAddress" />
+    <InputText id="password" @bind-Value="newUser.Password" />
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
@@ -27,12 +27,12 @@
 }
 else
 {
-    <table class="table table-striped">
+    <table class="table">
         <thread>
             <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email Address</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
             </tr>
         </thread>
         <tbody>
@@ -47,6 +47,8 @@ else
         </tbody>
     </table>
 }
+
+
 @code {
     private List<UserModel> users;
     private DisplayUserModel newUser = new DisplayUserModel();
@@ -62,7 +64,8 @@ else
         {
             FirstName = newUser.FirstName,
             LastName = newUser.LastName,
-            EmailAddress = newUser.EmailAddress
+            EmailAddress = newUser.EmailAddress,
+            Password = newUser.Password
         };
 
         await _db.InsertUser(u);

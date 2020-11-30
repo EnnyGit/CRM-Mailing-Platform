@@ -1,0 +1,22 @@
+﻿@page "/manage/clients/create"
+<h3>Create Client</h3>
+<EditForm Model="client" OnSubmit="Create">
+    <div class="form-group">
+        <lable>Name:</lable>
+    </div>
+    <div>
+        <InputText class="form-control" @bind-Value="@client.Name"></InputText>
+    </div>
+    <div>
+        <a href="manage/clients" class="btn btn-success" type="submit">Create Client</a>
+    </div>
+</EditForm>
+@code {
+    ClientModel client = new ClientModel();
+
+    private void Create()
+    {
+
+        return;
+    }
+}

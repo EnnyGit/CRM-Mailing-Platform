@@ -1,7 +1,10 @@
 ﻿@page "/manage/contacts/create"
+
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
+
 @inject IContactData _db
+
 <h3>Create Contact</h3>
 <EditForm Model="@newcontact" OnValidSubmit="@InsertContact">
     <DataAnnotationsValidator />
@@ -29,13 +32,13 @@
     
     private async Task InsertContact()
     {
-
         ContactModel contact = new ContactModel
         {
             FirstName = newcontact.FirstName,
             LastName = newcontact.LastName,
             EmailAddress = newcontact.EmailAddress
         };
+
         await _db.InsertContact(contact);
 
         newcontact = new DisplayContactModel();

@@ -38,12 +38,12 @@ namespace CRM_Model_Library
             }
         }
 
-        public Task SaveData<T>(string sql, T parameters)
+        public async Task SaveData<T>(string sql, T parameters)
         {
             using (IDbConnection connection = new SqlConnection(_config.GetConnectionString(ConnectionStringName)))
             {
                 // Executes the SQL string. The Async part of Execute returns a Task.
-                return connection.ExecuteAsync(sql, parameters);
+                await connection.ExecuteAsync(sql, parameters);
             }
         }
     }

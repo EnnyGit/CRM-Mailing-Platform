@@ -28,6 +28,7 @@ namespace CRM_Model_Library
 
             return _db.SaveData(sql, contact);
         }
+
         public Task<List<ClientModel>> GetClientsOfContact(ContactModel contact) {
             string sql = @"SELECT * FROM dbo.Client cl
                             INNER JOIN dbo.ClientContact cc ON cl.ClientId = cc.ClientId

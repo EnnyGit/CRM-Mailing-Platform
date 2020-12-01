@@ -1,34 +1,43 @@
 ﻿@page "/manage/contacts/create"
+@using CRM_Model_Library
+@using CRM_Blazor_Server.ViewModels
+@inject IContactData _db
 <h3>Create Contact</h3>
-<EditForm Model="contact" OnSubmit="Create">
-    <div class="form-group">
-        <lable>First name:</lable>
-    </div>
-    <div>
-        <InputText class="form-control" @bind-Value="@contact.FirstName"></InputText>
-    </div>
-    <div class="form-group">
-        <lable>Last name:</lable>
-    </div>
-    <div>
-        <InputText class="form-control" @bind-Value="@contact.LastName"></InputText>
-    </div>
-    <div class="form-group">
-        <lable>Email address:</lable>
-    </div>
-    <div>
-        <InputText class="form-control" @bind-Value="@contact.EmailAddress"></InputText>
-    </div>
-    <div>
-        <a href="manage/contacts" class="btn btn-success" type="submit">Create Contact</a>
-    </div>
+<EditForm Model="@newcontact" OnValidSubmit="@InsertContact">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <lable>First name:</lable>
+    
+    <InputText class="form-control" @bind-Value="newcontact.FirstName"></InputText>
+    
+    <lable>Last name:</lable>
+    
+    <InputText class="form-control" @bind-Value="newcontact.LastName"></InputText>
+    
+    
+    <lable>Email address:</lable>
+    
+    <InputText class="form-control" @bind-Value="newcontact.EmailAddress"></InputText>
+    
+    <button class="btn btn-success" type="submit">Create Contact</button>
+    <a href="manage/contacts" class="btn btn-primary" type="Continue">Back</a>
+    
 </EditForm>
-@code {
-    ContactModel contact = new ContactModel();
 
-    private void Create()
+@code {
+    private DisplayContactModel newcontact = new DisplayContactModel();
+    
+    private async Task InsertContact()
     {
 
-        return;
+        ContactModel contact = new ContactModel
+        {
+            FirstName = newcontact.FirstName,
+            LastName = newcontact.LastName,
+            EmailAddress = newcontact.EmailAddress
+        };
+        await _db.InsertContact(contact);
+
+        newcontact = new DisplayContactModel();
     }
 }

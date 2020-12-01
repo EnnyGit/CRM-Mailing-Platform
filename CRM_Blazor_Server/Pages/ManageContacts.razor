@@ -22,33 +22,33 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">id</th>
-            <th scope="col">Lastname</th>
+            <th scope="col">#</th>
             <th scope="col">Firstname</th>
+            <th scope="col">irstname</th>
             <th scope="col">Email address</th>
-            <th scope="col">Clients</th>
         </tr>
     </thead>
     @if (Contacts == null)
     {
-        <p>loading...</p>
+        <tr>loading...</tr>
     }
     else
     {
+        var i = 1;
         <tbody>
             @foreach (var model in Contacts)
             {
+                
                 <tr>
-                    <td scope="row">@model.LastName</td>
+                    <th  scope="row">@i</th>
                     <td>@model.FirstName</td>
+                    <td>@model.LastName</td>
                     <td>@model.EmailAddress</td>
-                    <td>
-                        <ul>
-                        
-                        </ul>
-                    </td>
                 </tr>
+                i++;
             }
+                
+            
         </tbody>
     }
 </table>
@@ -58,4 +58,7 @@
     {
         Contacts = await _db.GetContacts();
     }
+    
+
+
 }

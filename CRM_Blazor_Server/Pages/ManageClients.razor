@@ -37,16 +37,16 @@
     else
     {
         <tbody>
-
+            @{ 
+                var i = 1;
+            }
             @foreach (var client in Clients)
             {
                 <tr>
-                    <th scope="row">@client.Name</th>
-                    <td>
-                        <ul>
-                        </ul>
-                    </td>
+                    <th scope="row">@i</th>
+                    <td>@client.Name</td>
                 </tr>
+                i++;
             }
 
         </tbody>

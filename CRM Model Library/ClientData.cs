@@ -23,8 +23,8 @@ namespace CRM_Model_Library
 
         public Task InsertClient(ClientModel client)
         {
-            string sql = @"INSERT INTO dbo.Client(ClientName)
-                           values (@client.Name);";
+            string sql = @"INSERT INTO dbo.Client(Name)
+                           values (@Name);";
 
             return _db.SaveData(sql, client);
         }
@@ -32,7 +32,7 @@ namespace CRM_Model_Library
         {
             string sql = @"SELECT * FROM dbo.Contact co
                             INNER JOIN dbo.ClientContact cc ON co.ContactId = cc.ContactId
-                            WHERE cc.ClientId = @client.ClientId";
+                            WHERE cc.ClientId = @ClientId";
             return _db.LoadData<ContactModel, dynamic>(sql, new { });
 
         }

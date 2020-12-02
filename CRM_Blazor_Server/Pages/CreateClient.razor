@@ -1,22 +1,36 @@
 ﻿@page "/manage/clients/create"
+@using CRM_Model_Library
+@using CRM_Blazor_Server.ViewModels
+
+@inject IClientData _db
+
 <h3>Create Client</h3>
-<EditForm Model="client" OnSubmit="Create">
-    <div class="form-group">
-        <lable>Name:</lable>
-    </div>
-    <div>
-        <InputText class="form-control" @bind-Value="@client.Name"></InputText>
-    </div>
-    <div>
-        <a href="manage/clients" class="btn btn-success" type="submit">Create Client</a>
-    </div>
+<EditForm Model="@newclient" OnValidSubmit="@InsertClient">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <lable>Name:</lable>
+
+    <InputText class="form-control" @bind-Value="newclient.Name"></InputText>
+
+    
+    <button class="btn btn-success" type="submit">Create Client</button>
+    <a href="manage/clients" class="btn btn-primary" type="Continue">Back</a>
+
 </EditForm>
 @code {
-    ClientModel client = new ClientModel();
+    private DisplayClientModel newclient = new DisplayClientModel();
 
-    private void Create()
+    private async Task InsertClient()
     {
+        ClientModel Client = new ClientModel
+        {
+            Name = newclient.Name
+            
+        };
 
-        return;
+        await _db.InsertClient(Client);
+
+        newclient = new DisplayClientModel();
     }
+}
 }

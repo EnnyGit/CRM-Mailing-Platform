@@ -1,0 +1,36 @@
+﻿@page "/manage/contacts/viewcontact"
+@using CRM_Model_Library
+@using CRM_Blazor_Server.ViewModels
+@inject IContactData _db
+@if(Contact != null)
+{
+    <h1>@Contact.FirstName @Contact.LastName</h1>
+    <h4>@Contact.EmailAddress</h4>
+
+}
+else
+{
+    <p>Loading...</p>
+}
+@if(Clients != null)
+{
+    <h4>Clients:</h4>
+    <ul>
+        @foreach (var client in Clients)
+        {
+            <li>@client.Name</li>
+        }
+    </ul>
+    
+}
+@code{
+    public int Id { get; set; }
+    private ContactModel Contact;
+    private List<ClientModel> Clients;
+    protected override async Task OnInitializedAsync()
+    {
+        List<ContactModel> rep = await _db.GetContact(Id);
+        Contact = rep[0];
+        Clients = await _db.GetClientsOfContact(Contact);
+    }
+}

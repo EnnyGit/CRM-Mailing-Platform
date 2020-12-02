@@ -9,5 +9,6 @@ namespace CRM_Model_Library
         Task InsertContact(ContactModel contact);
         Task<List<ClientModel>> GetClientsOfContact(ContactModel contact);
         Task<List<ContactModel>> GetSelectContacts(int start,int rows);
+        Task<List<ContactModel>> GetContact(int id);
     }
 }

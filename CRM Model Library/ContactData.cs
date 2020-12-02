@@ -41,5 +41,10 @@ namespace CRM_Model_Library
             string sql = "SELECT * FROM dbo.Contact ORDER BY ContactId OFFSET @start ROWS FETCH NEXT @rows ROWS ONLY";
             return _db.LoadData<ContactModel, dynamic>(sql, new { });
         }
+        public Task<List<ContactModel>> GetContact(int id)
+        {
+            string sql = "SELECT * FROM dbo.Contact WHERE ContactId = @id";
+            return _db.LoadData<ContactModel, dynamic>(sql, new { });
+        }
     }
 }

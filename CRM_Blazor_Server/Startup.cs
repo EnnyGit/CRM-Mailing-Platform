@@ -32,6 +32,7 @@ namespace CRM_Blazor_Server
             services.AddSingleton<IDataAccess, DataAccess>();
             services.AddTransient<IClientData, ClientData>();
             services.AddTransient<IUserData, UserData>();
+            services.AddTransient<IMailChimpController, MailChimpController>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

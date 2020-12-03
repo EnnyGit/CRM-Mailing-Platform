@@ -1,10 +1,11 @@
-﻿@page "/manage/contacts/viewcontact"
+﻿@page "/manage/contacts/viewcontact/{Id}"
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
 @inject IContactData _db
 @if(Contact != null)
 {
     <h1>@Contact.FirstName @Contact.LastName</h1>
+    <br />
     <h4>@Contact.EmailAddress</h4>
 
 }
@@ -21,15 +22,20 @@ else
             <li>@client.Name</li>
         }
     </ul>
-    
 }
+<a class="btn btn-primary" href="manage/contacts" role="button">Back</a>
 @code{
-    public int Id { get; set; }
+    [Parameter]
+    public string Id { get; set; }
     private ContactModel Contact;
     private List<ClientModel> Clients;
     protected override async Task OnInitializedAsync()
     {
-        List<ContactModel> rep = await _db.GetContact(Id);
+        List<ContactModel> rep = await _db.GetContact(Int32.Parse(Id));
+        while(rep == null)
+        {
+            Thread.Sleep(1);
+        }
         Contact = rep[0];
         Clients = await _db.GetClientsOfContact(Contact);
     }

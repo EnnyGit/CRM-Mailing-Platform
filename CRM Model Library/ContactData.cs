@@ -29,11 +29,9 @@ namespace CRM_Model_Library
             return _db.SaveData(sql, contact);
         }
 
-        public Task<List<ClientModel>> GetClientsOfContact(ContactModel contact) {
-            string sql = @"SELECT * FROM dbo.Client cl
-                            INNER JOIN dbo.ClientContact cc ON cl.ClientId = cc.ClientId
-                            WHERE cc.ContactId = @contact.ContactId";
-            return _db.LoadData<ClientModel, dynamic>(sql, new { });
+        public Task<List<ClientModel>> GetClientsOfContact(int contactId) {
+            string sql = @"SELECT * FROM dbo.Client cl INNER JOIN dbo.ClientContact cc ON cl.ClientId = cc.ClientId WHERE cc.ContactId = @Id";
+            return _db.LoadData<ClientModel, dynamic>(sql, new { Id = contactId });
 
         }
         public Task<List<ContactModel>> GetSelectContacts(int start, int rows)
@@ -43,8 +41,8 @@ namespace CRM_Model_Library
         }
         public Task<List<ContactModel>> GetContact(int id)
         {
-            string sql = "SELECT * FROM dbo.Contact WHERE ContactId = @id";
-            return _db.LoadData<ContactModel, dynamic>(sql, new { });
+            string sql = "SELECT * FROM dbo.Contact WHERE ContactId = @Id";
+            return _db.LoadData<ContactModel, dynamic>(sql, new { Id = id });
         }
     }
 }

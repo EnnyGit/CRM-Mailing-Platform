@@ -28,6 +28,7 @@ else
     </ul>
 }
 <a class="btn btn-primary" href="manage/contacts" role="button">Back</a>
+<a class="btn btn-primary" href="manage/contacts/viewcontact/@Id.ToString()/addclients" role="button">Add clients</a>
 @code{
     [Parameter]
     public string Id { get; set; }
@@ -37,12 +38,8 @@ else
     protected override async Task OnInitializedAsync()
     {
         List<ContactModel> rep = await _db.GetContact(Int32.Parse(Id));
-        //while(rep == null)
-        //{
-        //    Thread.Sleep(1);
-        //}
+        
         Contact = rep[0];
         Clients = await _db.GetClientsOfContact(Contact.ContactId);
-        Console.WriteLine("Test");
     }
 }

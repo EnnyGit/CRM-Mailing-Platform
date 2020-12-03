@@ -44,5 +44,10 @@ namespace CRM_Model_Library
             string sql = "SELECT * FROM dbo.Contact WHERE ContactId = @Id";
             return _db.LoadData<ContactModel, dynamic>(sql, new { Id = id });
         }
+        public Task InsertLink(int contactId, int clientId)
+        {
+            string sql = "INSERT INTO dbo.ClientContact (ContactId,ClientId) VALUES (@coId, @clId)";
+            return _db.SaveData(sql, new {coId = contactId,clId = clientId });
+        }
     }
 }

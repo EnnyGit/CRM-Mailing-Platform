@@ -10,13 +10,12 @@ namespace CRM_Model_Library
     public class MailChimpController : IMailChimpController
     {
         private const string ApiKey = "474d98b60a1b310691196071ea85bf44-us7";
-        private static MailChimpManager Manager = new MailChimpManager(ApiKey);
+        private static readonly MailChimpManager Manager = new MailChimpManager(ApiKey);
 
         public async Task<IEnumerable<MailChimp.Net.Models.Campaign>> SentCampaigns()
         {
             var options = new CampaignRequest
             {
-                ListId = "abc123",
                 Status = CampaignStatus.Sent,
                 SortOrder = CampaignSortOrder.DESC,
                 Limit = 10
@@ -24,7 +23,7 @@ namespace CRM_Model_Library
 
             try
             {
-                var model = await Manager.Campaigns.GetAllAsync(options);
+                var model = await Manager.Campaigns.GetAllAsync();
                 return model;
             }
             catch (MailChimpException mce)

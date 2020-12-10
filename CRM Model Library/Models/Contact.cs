@@ -6,5 +6,6 @@ namespace CRM_Model_Library.Models
 {
     class Contact
     {
+
     }
 }

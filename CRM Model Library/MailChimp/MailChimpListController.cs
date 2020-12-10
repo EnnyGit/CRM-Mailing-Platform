@@ -12,7 +12,7 @@ namespace CRM_Model_Library
         private const string ApiKey = "474d98b60a1b310691196071ea85bf44-us7";
         private static readonly MailChimpManager Manager = new MailChimpManager(ApiKey);
 
-        public async Task<IEnumerable<MailChimp.Net.Models.List>> Index()
+        public async Task<IEnumerable<MailChimp.Net.Models.List>> GetAllLists()
         {
             try
             {
@@ -29,10 +29,9 @@ namespace CRM_Model_Library
                 var model = await Manager.Lists.GetAllAsync();
                 return model;
             }
-
         }
 
-        public async Task<MailChimp.Net.Models.List> Detail(string id)
+        public async Task<MailChimp.Net.Models.List> GetDetailOfList(string id)
         {
             try
             {
@@ -50,6 +49,5 @@ namespace CRM_Model_Library
                 return model;
             }
         }
-
     }
 }

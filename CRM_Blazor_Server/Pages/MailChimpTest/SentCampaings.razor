@@ -18,19 +18,27 @@ else
                 <th>ID</th>
                 <th>Sent Date</th>
                 <th>Emails Sent</th>
+                <th>Create Time</th>
+                <th>Delivery Status</th>
+                <th>Social Card</th>
+                <th>ListId</th>
                 <th>View</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var campaign in campaigns)
             {
-                <tr>
-                    <td>@campaign.Id</td>
-                    <td>@campaign.SendTime</td>
-                    <td>@campaign.EmailsSent</td>
-                    <! Fix target>
-                    <td> <a href="@campaign.ArchiveUrl" target="_blank">View &raquo;</a></td>
-                </tr>
+            <tr>
+                <td>@campaign.Id</td>
+                <td>@campaign.SendTime</td>
+                <td>@campaign.EmailsSent</td>
+                <td>@campaign.CreateTime</td>
+                <td>@campaign.DeliveryStatus</td>
+                <td>@campaign.SocialCard</td>
+                <td>@campaign.Recipients.ListId</td>
+                <! Fix target>
+                <td> <a href="@campaign.ArchiveUrl" target="_blank">View &raquo;</a></td>
+            </tr>
             }
         </tbody>
     </table>

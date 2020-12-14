@@ -6,6 +6,7 @@
 @inject IContactData _db
 @inject IClientData _db2
 @inject IDataAccess _DataAccess
+@inject NavigationManager NavigationManager
 <div style="float:right">
     @if (Clients == null)
     {
@@ -14,16 +15,14 @@
     else
     {
 
-        @foreach (var client in Clients)
+        @foreach (var client in Cexcept)
         {
-            @if (!ClientsOfContact.Contains(client))
-            {
-                <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(client, eventArgs.Value); }" />@client.Name<br />
+            <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(client, eventArgs.Value); }" />@client.Name<br />
 
 
-            }
+
         }
-        <button type="button" class="btn btn-primary" ></button>
+        <button type="button" class="btn btn-primary" @onclick="SubmitSelected">Submit</button>
 
 
     }
@@ -51,7 +50,7 @@
             }
         </ul>
     }
-    <a class="btn btn-primary" href="manage/contacts/@Id" role="button">Back</a>
+    <a class="btn btn-primary" href="manage/contacts/viewcontact/@Id.ToString()" role="button">Back</a>
 </div>
 @code{
     [Parameter]
@@ -60,6 +59,7 @@
     private List<ClientModel> ClientsOfContact;
     private List<ClientModel> Clients;
     private List<ClientModel> Selected;
+    private List<ClientModel> Cexcept;
     protected override async Task OnInitializedAsync()
     {
         List<ContactModel> rep = await _db.GetContact(Int32.Parse(Id));
@@ -67,8 +67,28 @@
         Contact = rep[0];
         ClientsOfContact = await _db.GetClientsOfContact(Contact.ContactId);
         Clients = await _db2.GetClients();
+        Selected = new List<ClientModel>();
+        AssingCexcept();
     }
-    public void CheckBoxClicked(ClientModel client,object checkedvalue)
+    protected List<ClientModel> AssingCexcept()
+    {
+        List<ClientModel> res = new List<ClientModel>();
+        int i = 0;
+        List<int> ids = new List<int>();
+        ids = ClientsOfContact.Select(x => x.ClientId).ToList();
+        while (i < Clients.Count)
+        {
+            if (!(ids.Contains(Clients[i].ClientId)))
+            {
+                res.Add(Clients[i]);
+            }
+            i++;
+        }
+        Cexcept = res;
+        return Cexcept;
+
+    }
+    public void CheckBoxClicked(ClientModel client, object checkedvalue)
     {
         if ((bool)checkedvalue)
         {
@@ -87,10 +107,11 @@
     }
     public async Task SubmitSelected()
     {
-        foreach(var client in Selected)
+        foreach (var client in Selected)
         {
             await _db.InsertLink(Contact.ContactId, client.ClientId);
         }
         Selected = new List<ClientModel>();
+        NavigationManager.NavigateTo($"manage/contacts/viewcontact/{Id}/addclients");
     }
 }

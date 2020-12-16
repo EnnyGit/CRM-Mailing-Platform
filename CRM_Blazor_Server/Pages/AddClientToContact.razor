@@ -112,6 +112,13 @@
             await _db.InsertLink(Contact.ContactId, client.ClientId);
         }
         Selected = new List<ClientModel>();
-        NavigationManager.NavigateTo($"manage/contacts/viewcontact/{Id}/addclients");
+        Refresh();
+    }
+    public void Refresh()
+    {
+        NavigationManager.NavigateTo($"refresh/manage/contacts/viewcontact");
+
+        NavigationManager.NavigateTo($"refresh/manage/contacts/viewcontact/{Id}/addclients");
+
     }
 }

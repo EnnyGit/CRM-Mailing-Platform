@@ -49,5 +49,10 @@ namespace CRM_Model_Library
             string sql = "INSERT INTO dbo.ClientContact (ContactId,ClientId) VALUES (@coId, @clId)";
             return _db.SaveData(sql, new {coId = contactId,clId = clientId });
         }
+        public Task DeleteLink(int contactId,int clientId)
+        {
+            string sql = "DELETE FROM dbo.ClientContact WHERE ContactId = @coId AND ClientId = @clid";
+            return _db.SaveData(sql, new { coId = contactId, clId = clientId });
+        }
     }
 }

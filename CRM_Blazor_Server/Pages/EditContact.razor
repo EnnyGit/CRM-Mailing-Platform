@@ -1,4 +1,4 @@
-﻿@page "/manage/contacts/viewcontact/{Id}/addclients"
+﻿@page "/manage/contacts/viewcontact/{Id}/editcontact"
 
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
@@ -7,7 +7,8 @@
 @inject IClientData _db2
 @inject IDataAccess _DataAccess
 @inject NavigationManager NavigationManager
-<div style="float:right">
+<div style="float:right;font-size:150%">
+    <h1>Add Clients</h1>
     @if (Clients == null)
     {
         <p>loading...</p>
@@ -42,13 +43,15 @@
     @if (ClientsOfContact != null)
     {
         <h4>Clients:</h4>
-        <ul>
+        
             @foreach (var client in ClientsOfContact)
             {
 
-                <li>@client.Name</li>
+                <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedDel(client, eventArgs.Value); }" />
+                @client.Name
+                <br />
             }
-        </ul>
+        
     }
     <a class="btn btn-primary" href="manage/contacts/viewcontact/@Id.ToString()" role="button">Back</a>
 </div>
@@ -58,7 +61,8 @@
     private ContactModel Contact;
     private List<ClientModel> ClientsOfContact;
     private List<ClientModel> Clients;
-    private List<ClientModel> Selected;
+    private List<ClientModel> AddSelected;
+    private List<ClientModel> DelSelected;
     private List<ClientModel> Cexcept;
     protected override async Task OnInitializedAsync()
     {
@@ -67,7 +71,7 @@
         Contact = rep[0];
         ClientsOfContact = await _db.GetClientsOfContact(Contact.ContactId);
         Clients = await _db2.GetClients();
-        Selected = new List<ClientModel>();
+        AddSelected = new List<ClientModel>();
         AssingCexcept();
     }
     protected List<ClientModel> AssingCexcept()
@@ -92,33 +96,48 @@
     {
         if ((bool)checkedvalue)
         {
-            if (!Selected.Contains(client))
+            if (!AddSelected.Contains(client))
             {
-                Selected.Add(client);
+                AddSelected.Add(client);
             }
         }
         else
         {
-            if (Selected.Contains(client))
+            if (AddSelected.Contains(client))
             {
-                Selected.Remove(client);
+                AddSelected.Remove(client);
+            }
+        }
+    }
+    public void CheckBoxClickedDel(ClientModel client, object checkedvalue)
+    {
+        if ((bool)checkedvalue)
+        {
+            if (!DelSelected.Contains(client))
+            {
+                DelSelected.Add(client);
+            }
+        }
+        else
+        {
+            if (DelSelected.Contains(client))
+            {
+                DelSelected.Remove(client);
             }
         }
     }
     public async Task SubmitSelected()
     {
-        foreach (var client in Selected)
+        foreach (var client in AddSelected)
         {
             await _db.InsertLink(Contact.ContactId, client.ClientId);
         }
-        Selected = new List<ClientModel>();
-        Refresh();
-    }
-    public void Refresh()
-    {
-        NavigationManager.NavigateTo($"refresh/manage/contacts/viewcontact");
+        foreach (var client in DelSelected)
+        {
 
-        NavigationManager.NavigateTo($"refresh/manage/contacts/viewcontact/{Id}/addclients");
-
+        }
+        AddSelected = new List<ClientModel>();
+        NavigationManager.NavigateTo(NavigationManager.Uri,forceLoad:true);
     }
+
 }

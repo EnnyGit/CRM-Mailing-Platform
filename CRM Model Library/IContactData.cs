@@ -11,6 +11,7 @@ namespace CRM_Model_Library
         Task<List<ContactModel>> GetSelectContacts(int start,int rows);
         Task<List<ContactModel>> GetContact(int id);
         Task InsertLink(int contactId, int clientId);
+        Task DeleteLink(int contactId, int clientId);
 
     }
 

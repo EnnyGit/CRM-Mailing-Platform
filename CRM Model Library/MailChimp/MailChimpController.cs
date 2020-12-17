@@ -11,9 +11,6 @@ namespace CRM_Model_Library
     {
         private CampaignController CampaignBuilder = new CampaignController();
 
-        private const string ApiKey = "474d98b60a1b310691196071ea85bf44-us7";
-        private static readonly MailChimpManager Manager = new MailChimpManager(ApiKey);
-
         public async Task<IEnumerable<MailChimp.Net.Models.Campaign>> SentCampaigns()
         {
             //await Manager.Campaigns.AddAsync(CampaignBuilder.CreateCampaign());
@@ -26,13 +23,13 @@ namespace CRM_Model_Library
 
             try
             {
-                var model = await Manager.Campaigns.GetAllAsync();
+                var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync();
                 return model;
             }
             catch (MailChimpException mce)
             {
                 //TODO: Error message "httpStatusCodeResult(HttpStatusCode.BadGateway, mce.Message)"
-                var model = await Manager.Campaigns.GetAllAsync(options);
+                var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(options);
                 return model;
             }
             catch (Exception ex)

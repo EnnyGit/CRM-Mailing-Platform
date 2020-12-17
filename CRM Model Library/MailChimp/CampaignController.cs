@@ -12,9 +12,9 @@ namespace CRM_Model_Library
         private const string ApiKey = "474d98b60a1b310691196071ea85bf44-us7";
         private static readonly MailChimpManager Manager = new MailChimpManager(ApiKey);
 
-        public MailChimp.Net.Models.Campaign CreateCampaign()
+        public MailChimp.Net.Models.Campaign CreateRegularCampaign()
         {
-            //Recipient
+            //Recipient - 
             //Create_time ( moeten wij Automatisch aanmaken )
             // Id (automatisch?)
             //settings.title = camp[aign Title
@@ -29,8 +29,11 @@ namespace CRM_Model_Library
                     Title = "HeleMooieNaam2"
                 }
             };
+
             return campaign;
         }
+
+        // AddRecipient()
     }
 }
 

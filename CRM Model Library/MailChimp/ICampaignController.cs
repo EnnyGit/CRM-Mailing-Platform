@@ -4,6 +4,6 @@ namespace CRM_Model_Library
 {
     public interface ICampaignController
     {
-        Campaign CreateCampaign();
+        Campaign CreateRegularCampaign();
     }
 }

@@ -1,4 +1,9 @@
-﻿@page "/create_mail"
+﻿@page "/update_campaign{id}"
+
+@using CRM_Model_Library
+@using MailChimp.Net;
+
+@inject IMailChimpController _controller
 
 <h3>Edit "Campaign naam"</h3>
 <p>
@@ -16,16 +21,25 @@
     <option>Gebruiker</option>
 </select>
 <br>
+
 <form action="/action_page.php">
     <lable for="birthday">When to send:</lable>
     <input type="date" id="" name="">
 </form>
 <br>
-<a class="btn btn-primary" href="email_design" role="button">Choose Template</a>
-<a class="btn btn-primary" href="#" role="button" style="float:left;margin-right: 1%;" >Go Back</a>
+
+<a class="btn btn-primary" href="#" role="button" style="float:left;margin-right: 1%;">Go Back</a>
+
 @code {
+    [Parameter]
+    public string Id { get; set; }
+    private MailChimp.Net.Models.Campaign campaign;
 
+    protected override async Task OnInitializedAsync()
+    {
+       // campaign = _controller.
+    }
 
+    //<a class="btn btn-primary" href="email_design" role="button">Choose Template</a>
 
 }
-

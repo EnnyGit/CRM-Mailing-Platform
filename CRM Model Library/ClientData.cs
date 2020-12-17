@@ -34,7 +34,7 @@ namespace CRM_Model_Library
             return _db.LoadData<ContactModel, dynamic>(sql, new {Id= clientId });
 
         }
-        public Task InsertLink(int contactId, int clientId)
+        public Task InsertLink(int clientId,int contactId)
         {
             string sql = "INSERT INTO dbo.ClientContact (ContactId,ClientId) VALUES (@coId, @clId)";
             return _db.SaveData(sql, new { coId = contactId, clId = clientId });
@@ -43,6 +43,11 @@ namespace CRM_Model_Library
         {
             string sql = "SELECT * FROM dbo.Client WHERE ClientId = @Id";
             return _db.LoadData<ClientModel, dynamic>(sql, new { Id = id });
+        }
+        public Task DeleteLink(int clientId, int contactId)
+        {
+            string sql = "DELETE FROM dbo.ClientContact WHERE ContactId = @coId AND ClientId = @clid";
+            return _db.SaveData(sql, new { coId = contactId, clId = clientId });
         }
     }
 }

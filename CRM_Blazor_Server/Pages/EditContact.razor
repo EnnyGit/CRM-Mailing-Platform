@@ -7,8 +7,19 @@
 @inject IClientData _db2
 @inject IDataAccess _DataAccess
 @inject NavigationManager NavigationManager
-<div style="float:right;font-size:150%">
-    <h1>Add Clients</h1>
+@if (Contact != null)
+{
+    <h1>@Contact.FirstName @Contact.LastName</h1>
+    <h4>@Contact.EmailAddress</h4>
+    <br />
+
+}
+else
+{
+    <p>Loading...</p>
+}
+<div style="float:right;">
+    <h2>Add Clients</h2>
     @if (Clients == null)
     {
         <p>loading...</p>
@@ -18,43 +29,35 @@
 
         @foreach (var client in Cexcept)
         {
-            <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(client, eventArgs.Value); }" />@client.Name<br />
+            <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(client, eventArgs.Value); }" style="font-size: 150%; font-family: Times New Roman, Times, serif" />@client.Name<br />
 
 
 
         }
-        <button type="button" class="btn btn-primary" @onclick="SubmitSelected">Submit</button>
 
 
     }
 </div>
 <div>
-    @if (Contact != null)
-    {
-        <h1>@Contact.FirstName @Contact.LastName</h1>
-        <br />
-        <h4>@Contact.EmailAddress</h4>
-
-    }
-    else
-    {
-        <p>Loading...</p>
-    }
+    <h2>Delete Clients:</h2>
     @if (ClientsOfContact != null)
     {
-        <h4>Clients:</h4>
-        
-            @foreach (var client in ClientsOfContact)
-            {
 
-                <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedDel(client, eventArgs.Value); }" />
-                @client.Name
-                <br />
-            }
-        
+
+        @foreach (var client in ClientsOfContact)
+        {
+
+            <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedDel(client, eventArgs.Value); }" />
+            @client.Name
+            <br />
+        }
+
     }
     <a class="btn btn-primary" href="manage/contacts/viewcontact/@Id.ToString()" role="button">Back</a>
 </div>
+<br />
+<button type="button" class="btn btn-primary" @onclick="SubmitSelected">Submit</button>
+
 @code{
     [Parameter]
     public string Id { get; set; }
@@ -72,6 +75,7 @@
         ClientsOfContact = await _db.GetClientsOfContact(Contact.ContactId);
         Clients = await _db2.GetClients();
         AddSelected = new List<ClientModel>();
+        DelSelected = new List<ClientModel>();
         AssingCexcept();
     }
     protected List<ClientModel> AssingCexcept()
@@ -134,10 +138,11 @@
         }
         foreach (var client in DelSelected)
         {
-
+            await _db.DeleteLink(Contact.ContactId, client.ClientId);
         }
         AddSelected = new List<ClientModel>();
-        NavigationManager.NavigateTo(NavigationManager.Uri,forceLoad:true);
+        DelSelected = new List<ClientModel>();
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
 }

@@ -7,7 +7,7 @@ using MailChimp.Net.Core;
 
 namespace CRM_Model_Library
 {
-    class MailChimpListController
+    public class MailChimpListController : IMailChimpListController
     {
         public async Task<IEnumerable<MailChimp.Net.Models.List>> GetAllLists()
         {

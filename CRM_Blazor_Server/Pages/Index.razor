@@ -20,6 +20,7 @@ else
                 <th>Name</th>
                 <th>Sent on</th>
                 <th>Created</th>
+                <th>Random</th>
                 <th>View mail</th>
             </tr>
         </thead>
@@ -30,6 +31,7 @@ else
                 <td>@campaign.Settings.Title</td>
                 <td>@campaign.SendTime</td>
                 <td>@campaign.CreateTime</td>
+                <td>@campaign.Settings.FromName</td>
                 <! Fix target>
                 <td> <a href="@campaign.ArchiveUrl" target="_blank">View &raquo;</a></td>
                 <td> <a class="btn btn-primary" href="update_campaign/@campaign.Id.ToString()" role="button" style="float:left;margin-right: 1%;">Edit</a></td>

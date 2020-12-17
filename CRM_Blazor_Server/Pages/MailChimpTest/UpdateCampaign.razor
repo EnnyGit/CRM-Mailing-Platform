@@ -2,51 +2,82 @@
 
 @using CRM_Model_Library
 @using MailChimp.Net;
+@using CRM_Blazor_Server.ViewModels
 
 @inject IMailChimpController _controller
+@inject IMailChimpListController _listController
 
-@if (campaign is null)
+@if (campaign is null || newCampaign is null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
     <h3>Edit @campaign.Settings.Title</h3>
-    <p>
-        <lable>Title of E-mail:</lable>
-        <input type="text" value="@campaign.Settings.Title">
-    </p>
-    <lable>Choose a lable:</lable>
-    <select>
-        <option></option>
-        <option>Decision Maker</option>
-        <option>Directeur</option>
-        <option>Marketing medewerker</option>
-        <option>Influencer</option>
-        <option>Gemeenteambtenaar</option>
-        <option>Gebruiker</option>
-    </select>
-    <br>
+    <EditForm Model="newCampaign" OnValidSubmit="AddOrUpdateCampaign">
+        <DataAnnotationsValidator />
 
-    <form action="/action_page.php">
-        <lable for="birthday">When to send:</lable>
-        <input type="date" id="" name="">
-    </form>
-    <br>
 
-    <a class="btn btn-primary" href="#" role="button" style="float:left;margin-right: 1%;">Go Back</a>
+        <div class="form-group">
+            <lable>Campaign Title</lable>
+            <InputText class="form-control" @bind-Value="@newCampaign.Title"></InputText>
+        </div>
+        <div class="form-group">
+            <lable>Subject</lable>
+            <InputText class="form-control" @bind-Value="@newCampaign.Subject"></InputText>
+        </div>
+        <div class="form-group">
+            <lable>PreviewText</lable>
+            <InputText class="form-control" @bind-Value="@newCampaign.PreviewText"></InputText>
+        </div>
+        <div class="form-group">
+            <lable>From Name</lable>
+            <InputText class="form-control" @bind-Value="@newCampaign.FromName"></InputText>
+        </div>
+        <div class="form-group">
+            <lable>From Email</lable>
+            <InputText class="form-control" @bind-Value="@newCampaign.FromEmail"></InputText>
+        </div>
+        <div />
+        <ValidationSummary />
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a class="btn btn-primary" href="#" role="button" style="float:left;margin-right: 1%;">Back</a>
+    </EditForm>
 }
 
 @code {
     [Parameter]
     public string Id { get; set; }
-    private MailChimp.Net.Models.Campaign campaign;
+    private static MailChimp.Net.Models.Campaign campaign;
+    private static DisplayCampaignModel newCampaign = new DisplayCampaignModel();
+    private static MailChimp.Net.Models.List list;
 
     protected override async Task OnInitializedAsync()
     {
         campaign = await ApiKeyMailChimp.Manager.Campaigns.GetAsync(Id);
+        list = await _listController.GetDetailOfList(campaign.Recipients.ListId);
+        newCampaign.Title = campaign.Settings.Title;
+        newCampaign.Subject = campaign.Settings.SubjectLine;
+        newCampaign.PreviewText = campaign.Settings.PreviewText;
+        newCampaign.FromName = campaign.Settings.FromName;
+        newCampaign.FromEmail = list.CampaignDefaults.FromEmail;
     }
 
-    //<a class="btn btn-primary" href="email_design" role="button">Choose Template</a>
+    //protected async Task GetCampaignAudience()
+    //{
+    //    list = await _listController.GetDetailOfList(campaign.Recipients.ListId);
+    //}
 
+    private async Task AddOrUpdateCampaign()
+    {
+        campaign.Settings.Title = newCampaign.Title;
+        campaign.Settings.SubjectLine = newCampaign.Subject;
+        campaign.Settings.PreviewText = newCampaign.PreviewText;
+        campaign.Settings.FromName = newCampaign.FromName;
+        list.CampaignDefaults.FromEmail = newCampaign.FromEmail;
+
+        await ApiKeyMailChimp.Manager.Lists.AddOrUpdateAsync(list);
+        await ApiKeyMailChimp.Manager.Campaigns.AddOrUpdateAsync(campaign);
+    }
+    //<a class="btn btn-primary" href="email_design" role="button">Choose Template</a>
 }

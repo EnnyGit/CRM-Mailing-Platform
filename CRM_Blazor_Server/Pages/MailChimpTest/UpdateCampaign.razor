@@ -1,34 +1,41 @@
-﻿@page "/update_campaign"
+﻿@page "/update_campaign/{Id}"
 
 @using CRM_Model_Library
 @using MailChimp.Net;
 
 @inject IMailChimpController _controller
 
-<h3>Edit "Campaign naam"</h3>
-<p>
-    <lable>Title of E-mail:</lable>
-    <input type="text" id="" name="">
-</p>
-<lable>Choose a lable:</lable>
-<select>
-    <option></option>
-    <option>Decision Maker</option>
-    <option>Directeur</option>
-    <option>Marketing medewerker</option>
-    <option>Influencer</option>
-    <option>Gemeenteambtenaar</option>
-    <option>Gebruiker</option>
-</select>
-<br>
+@if (campaign is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h3>Edit @campaign.Settings.Title</h3>
+    <p>
+        <lable>Title of E-mail:</lable>
+        <input type="text" value="@campaign.Settings.Title">
+    </p>
+    <lable>Choose a lable:</lable>
+    <select>
+        <option></option>
+        <option>Decision Maker</option>
+        <option>Directeur</option>
+        <option>Marketing medewerker</option>
+        <option>Influencer</option>
+        <option>Gemeenteambtenaar</option>
+        <option>Gebruiker</option>
+    </select>
+    <br>
 
-<form action="/action_page.php">
-    <lable for="birthday">When to send:</lable>
-    <input type="date" id="" name="">
-</form>
-<br>
+    <form action="/action_page.php">
+        <lable for="birthday">When to send:</lable>
+        <input type="date" id="" name="">
+    </form>
+    <br>
 
-<a class="btn btn-primary" href="#" role="button" style="float:left;margin-right: 1%;">Go Back</a>
+    <a class="btn btn-primary" href="#" role="button" style="float:left;margin-right: 1%;">Go Back</a>
+}
 
 @code {
     [Parameter]
@@ -37,7 +44,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-       // campaign = _controller.
+        campaign = await ApiKeyMailChimp.Manager.Campaigns.GetAsync(Id);
     }
 
     //<a class="btn btn-primary" href="email_design" role="button">Choose Template</a>

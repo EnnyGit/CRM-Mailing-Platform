@@ -9,9 +9,6 @@ namespace CRM_Model_Library
 {
     public class CampaignController : ICampaignController
     {
-        private const string ApiKey = "474d98b60a1b310691196071ea85bf44-us7";
-        private static readonly MailChimpManager Manager = new MailChimpManager(ApiKey);
-
         public MailChimp.Net.Models.Campaign CreateRegularCampaign()
         {
             //Recipient - 

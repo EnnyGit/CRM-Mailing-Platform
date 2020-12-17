@@ -32,7 +32,7 @@ else
                 <td>@campaign.CreateTime</td>
                 <! Fix target>
                 <td> <a href="@campaign.ArchiveUrl" target="_blank">View &raquo;</a></td>
-                <td> <a class="btn btn-primary" href="update_campaign" role="button" style="float:left;margin-right: 1%;">Edit</a></td>
+                <td> <a class="btn btn-primary" href="update_campaign/@campaign.Id.ToString()" role="button" style="float:left;margin-right: 1%;">Edit</a></td>
             </tr>
             }
         </tbody>

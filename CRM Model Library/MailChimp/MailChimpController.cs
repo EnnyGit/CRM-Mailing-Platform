@@ -35,20 +35,20 @@ namespace CRM_Model_Library
             catch (Exception ex)
             {
                 //TODO: Error message "httpStatusCodeResult(HttpStatusCode.ServiceUnavailable, ex.Message)"
-                var model = await Manager.Campaigns.GetAllAsync(options);
+                var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(options);
                 return model;
             }
         }
 
         public async Task<IEnumerable<MailChimp.Net.Models.List>> GetLists()
         {
-            var model = await Manager.Lists.GetAllAsync();
+            var model = await ApiKeyMailChimp.Manager.Lists.GetAllAsync();
             return model;
         }
 
         public async Task<IEnumerable<MailChimp.Net.Models.Member>> GetMembers()
         {
-            var model = await Manager.Members.GetAllAsync("0756e04de0");
+            var model = await ApiKeyMailChimp.Manager.Members.GetAllAsync("0756e04de0");
             return model;
         }
     }

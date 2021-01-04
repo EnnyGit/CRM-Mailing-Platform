@@ -9,5 +9,18 @@ public class ContactModel
 	public string FirstName { get; set; }
 
 	public string LastName { get; set; }
+
+    public override bool Equals(object obj)
+    {
+        if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+        {
+            return false;
+        }
+        else
+        {
+            ContactModel c = (ContactModel) obj;
+            return this.ContactId == c.ContactId;
+        }
+    }
 }
 

@@ -4,10 +4,12 @@
 
 @inject IMailChimpController _controller
 
-<div>
-    <a class="btn-link" href="create_mail">Create Mail</a>
-</div>
+
 <h1>Campaigns</h1>
+
+<a class="btn btn-primary" href="/create_mail" style="float:left;margin-right: 1%;">Create Campaign</a>
+
+
 @if (campaigns is null)
 {
     <p><em>Loading...</em></p>

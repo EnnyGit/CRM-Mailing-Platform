@@ -15,27 +15,28 @@ namespace CRM_Model_Library
         {
             //await Manager.Campaigns.AddAsync(CampaignBuilder.CreateCampaign());
            
-            var options = new CampaignRequest
+            var campaignRequest = new CampaignRequest
             {
-                SortOrder = CampaignSortOrder.DESC,
-                Limit = 10
+                Limit = 999,
+                SortField = CampaignSortField.CreateTime,
+                SortOrder = CampaignSortOrder.DESC
             };
 
             try
             {
-                var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync();
+                var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(campaignRequest);
                 return model;
             }
             catch (MailChimpException mce)
             {
                 //TODO: Error message "httpStatusCodeResult(HttpStatusCode.BadGateway, mce.Message)"
-                var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(options);
+                var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(campaignRequest);
                 return model;
             }
             catch (Exception ex)
             {
                 //TODO: Error message "httpStatusCodeResult(HttpStatusCode.ServiceUnavailable, ex.Message)"
-                var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(options);
+                var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(campaignRequest);
                 return model;
             }
         }

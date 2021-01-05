@@ -16,8 +16,6 @@ else
     <h3>Edit @campaign.Settings.Title</h3>
     <EditForm Model="newCampaign" OnValidSubmit="AddOrUpdateCampaign">
         <DataAnnotationsValidator />
-
-
         <div class="form-group">
             <lable>Campaign Title</lable>
             <InputText class="form-control" @bind-Value="@newCampaign.Title"></InputText>
@@ -60,7 +58,14 @@ else
         newCampaign.Subject = campaign.Settings.SubjectLine;
         newCampaign.PreviewText = campaign.Settings.PreviewText;
         newCampaign.FromName = campaign.Settings.FromName;
-        newCampaign.FromEmail = list.CampaignDefaults.FromEmail;
+        if (list.CampaignDefaults is null)
+        {
+            newCampaign.FromEmail = "";
+        }
+        else
+        {
+            newCampaign.FromEmail = list.CampaignDefaults.FromEmail;
+        }
     }
 
     //protected async Task GetCampaignAudience()

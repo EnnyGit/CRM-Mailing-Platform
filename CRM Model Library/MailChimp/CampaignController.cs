@@ -9,28 +9,32 @@ namespace CRM_Model_Library
 {
     public class CampaignController : ICampaignController
     {
-        public MailChimp.Net.Models.Campaign CreateRegularCampaign()
+        public async Task CreateRegularCampaign(string campaignTitle)
         {
-            //Recipient - 
-            //Create_time ( moeten wij Automatisch aanmaken )
-            // Id (automatisch?)
-            //settings.title = camp[aign Title
-            //campaign.Recipients
-
             MailChimp.Net.Models.Campaign campaign = new MailChimp.Net.Models.Campaign
             {
                 ContentType = "template",
                 Type = CampaignType.Regular,
                 Settings = new MailChimp.Net.Models.Setting
                 {
-                    Title = "HeleMooieNaam2"
+                    Title = campaignTitle
                 }
             };
-
-            return campaign;
+            await ApiKeyMailChimp.Manager.Campaigns.AddAsync(campaign);
         }
 
-        // AddRecipient()
+        public async Task<IEnumerable<MailChimp.Net.Models.Campaign>> GetLatestCampaign()
+        {
+            var campaignRequest = new CampaignRequest
+            {
+                Limit = 1,
+                SortField = CampaignSortField.CreateTime,
+                SortOrder = CampaignSortOrder.DESC
+            };
+
+            var campaign = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(campaignRequest);
+            return campaign;
+        }
     }
 }
 

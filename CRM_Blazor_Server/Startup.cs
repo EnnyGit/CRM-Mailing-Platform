@@ -34,6 +34,7 @@ namespace CRM_Blazor_Server
             services.AddTransient<IUserData, UserData>();
             services.AddTransient<IMailChimpController, MailChimpController>();
             services.AddTransient<IMailChimpListController, MailChimpListController>();
+            services.AddTransient<ICampaignController, CampaignController>();
             //services.AddTransient<ICa>
         }
 

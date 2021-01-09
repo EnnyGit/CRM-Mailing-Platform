@@ -28,5 +28,16 @@ namespace CRM_Model_Library
 
             return _db.SaveData(sql, user);
         }
+        public Task<List<UserModel>> GetUser(int id)
+        {
+            string sql = "SELECT * FROM dbo.Contact WHERE UserId = @Id";
+            return _db.LoadData<UserModel, dynamic>(sql, new { Id = id });
+        }
+        public Task<List<UserModel>> FindUser(string email)
+        {
+            string sql = "SELECT * FROM dbo.Users WHERE Email = @Email";
+            return _db.LoadData<UserModel, dynamic>(sql, new { Email = email });
+
+        }
     }
 }

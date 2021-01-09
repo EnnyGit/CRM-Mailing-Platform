@@ -6,6 +6,7 @@
 
 @inject IMailChimpController _controller
 @inject IMailChimpListController _listController
+@inject IMailChimpTemplateController _templateController
 
 @if (campaign is null || newCampaign is null)
 {
@@ -38,8 +39,29 @@ else
         </div>
         <div />
         <ValidationSummary />
-        <button type="submit" class="btn btn-primary">Save</button>
-        <a class="btn btn-primary" href="#" role="button" style="float:left;margin-right: 1%;">Back</a>
+        <div class="form-group">
+            <lable>Choose Template: </lable>
+
+            <select class="btn btn-secondary dropdown-toggle" name="template" id="template" @bind="templateId">
+                <option value="">Choose Template</option>
+                @foreach (var template in templates)
+                {
+                    <option value="@template.Id">@template.Name</option>
+                }
+
+            </select>
+
+            <img src="@GetThumbnail()" style="border:1px solid black;" width="120"
+                 height="151">
+
+        </div>
+        <div>
+            <button type="submit" href="https://us7.admin.mailchimp.com/templates/replicate?id=@templateId" class="btn btn-primary">Edit Template</button>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a class="btn btn-primary" href="#" role="button">Back</a>
+        </div>
     </EditForm>
 }
 
@@ -48,23 +70,44 @@ else
     public string Id { get; set; }
     private static MailChimp.Net.Models.Campaign campaign;
     private static DisplayCampaignModel newCampaign = new DisplayCampaignModel();
-    private static MailChimp.Net.Models.List list;
+    private static MailChimp.Net.Models.List memberList;
+    private static IEnumerable<MailChimp.Net.Models.Template> templates;
+
+    private int templateId;
+
+    //private async Task AddTemplateToCampaign()
+    //{
+    //    _co
+    //}
+
+    private async Task<string> GetThumbnail()
+    {
+        var thumbnail = await _templateController.GetThumbnailById(templateId);
+        return thumbnail;
+    }
+
+    private async Task EditDuplicateTemplate(int templateId)
+    {
+        var duplicatetemplate = await _templateController.GetTemplateById(templateId);
+
+    }
 
     protected override async Task OnInitializedAsync()
     {
+        templates = await _templateController.GetAllTemplates();
         campaign = await ApiKeyMailChimp.Manager.Campaigns.GetAsync(Id);
-        list = await _listController.GetDetailOfList(campaign.Recipients.ListId);
+        memberList = await _listController.GetDetailOfList(campaign.Recipients.ListId);
         newCampaign.Title = campaign.Settings.Title;
         newCampaign.Subject = campaign.Settings.SubjectLine;
         newCampaign.PreviewText = campaign.Settings.PreviewText;
         newCampaign.FromName = campaign.Settings.FromName;
-        if (list.CampaignDefaults is null)
+        if (memberList.CampaignDefaults is null)
         {
             newCampaign.FromEmail = "";
         }
         else
         {
-            newCampaign.FromEmail = list.CampaignDefaults.FromEmail;
+            newCampaign.FromEmail = memberList.CampaignDefaults.FromEmail;
         }
     }
 
@@ -79,9 +122,9 @@ else
         campaign.Settings.SubjectLine = newCampaign.Subject;
         campaign.Settings.PreviewText = newCampaign.PreviewText;
         campaign.Settings.FromName = newCampaign.FromName;
-        list.CampaignDefaults.FromEmail = newCampaign.FromEmail;
+        memberList.CampaignDefaults.FromEmail = newCampaign.FromEmail;
 
-        await ApiKeyMailChimp.Manager.Lists.AddOrUpdateAsync(list);
+        await ApiKeyMailChimp.Manager.Lists.AddOrUpdateAsync(memberList);
         await ApiKeyMailChimp.Manager.Campaigns.AddOrUpdateAsync(campaign);
     }
     //<a class="btn btn-primary" href="email_design" role="button">Choose Template</a>

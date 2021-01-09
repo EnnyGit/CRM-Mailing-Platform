@@ -5,7 +5,7 @@
 
 
 <div style="align-items:end; float:right;">
-    <button type="button" class="btn btn-primary">Create</button>
+    <a class="btn btn-primary" href="manage/clients/create" role="button">Create</a>
 </div>
 <h3>Clients</h3>
 <ul class="nav nav-pills nav-justified">
@@ -24,15 +24,14 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">id</th>
+            <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Contacts</th>
 
         </tr>
     </thead>
     @if (Clients == null)
     {
-        <p>loading...</p>
+        <tr>loading...</tr>
     }
     else
     {
@@ -45,6 +44,7 @@
                 <tr>
                     <th scope="row">@i</th>
                     <td>@client.Name</td>
+                    <td><a class="btn btn-primary" href="manage/clients/viewclient/@client.ClientId.ToString()" role="button">Go To</a></td>
                 </tr>
                 i++;
             }

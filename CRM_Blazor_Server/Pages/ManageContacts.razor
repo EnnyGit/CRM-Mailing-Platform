@@ -2,6 +2,7 @@
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
 @inject IContactData _db
+
 <div style="align-items:end; float:right;">
     <a class="btn btn-primary" href="manage/contacts/create" role="button">Create</a>
 </div>
@@ -24,8 +25,9 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Firstname</th>
-            <th scope="col">irstname</th>
+            <th scope="col">Lastname</th>
             <th scope="col">Email address</th>
+            <th scope="col">Go To</th>
         </tr>
     </thead>
     @if (Contacts == null)
@@ -40,15 +42,17 @@
             {
                 
                 <tr>
-                    <th  scope="row">@i</th>
+                    <th scope="row">@i</th>
                     <td>@model.FirstName</td>
                     <td>@model.LastName</td>
                     <td>@model.EmailAddress</td>
+                    <td><a class="btn btn-primary" href="manage/contacts/viewcontact/@model.ContactId.ToString()" role="button">Go To</a></td>
                 </tr>
+                
                 i++;
             }
-                
-            
+
+
         </tbody>
     }
 </table>
@@ -58,7 +62,7 @@
     {
         Contacts = await _db.GetContacts();
     }
-    
+
 
 
 }

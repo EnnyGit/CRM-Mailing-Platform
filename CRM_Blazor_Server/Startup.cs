@@ -34,6 +34,8 @@ namespace CRM_Blazor_Server
             services.AddTransient<IContactData, ContactData>();
 
             services.AddTransient<IUserData, UserData>();
+            services.AddScoped<LoginState>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

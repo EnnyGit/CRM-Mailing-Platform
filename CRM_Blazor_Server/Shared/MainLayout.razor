@@ -1,18 +1,29 @@
 ﻿@inherits LayoutComponentBase
+@implements IDisposable
+@inject LoginState loginState;
+@inject IUserData _db
+
 
 <div class="sidebar">
-    <NavMenu />
+    @if (loginState.IsLoggedIn)
+    {
+        <NavMenu />
+    }
 </div>
 <div class="main">
     <div class="content px-4">
         @Body
     </div>
 </div>
+}
 
-@code{
-    bool Loggedin;
-    protected override async Task OnInitializedAsync()
+@code {
+    protected override void OnInitialized()
     {
-        
+        loginState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        loginState.OnChange -= StateHasChanged;
     }
 }

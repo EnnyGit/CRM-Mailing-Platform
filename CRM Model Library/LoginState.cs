@@ -7,13 +7,13 @@ namespace CRM_Model_Library
     public class LoginState
     {
         public bool IsLoggedIn { get; set; }
-        public string username { get; set; }
+        public UserModel user { get; set; }
         public event Action OnChange;
 
-        public void SetLogin(bool login, string user)
+        public void SetLogin(bool login, UserModel user)
         {
             IsLoggedIn = login;
-            username = user;
+            user = user;
             NotifyStateChanged();
         }
 

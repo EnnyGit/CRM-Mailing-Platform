@@ -1,0 +1,148 @@
+﻿@page "/manage/contacts/viewcontact/{Id}/editcontact"
+
+@using CRM_Model_Library
+@using CRM_Blazor_Server.ViewModels
+
+@inject IContactData _db
+@inject IClientData _db2
+@inject IDataAccess _DataAccess
+@inject NavigationManager NavigationManager
+@if (Contact != null)
+{
+    <h1>@Contact.FirstName @Contact.LastName</h1>
+    <h4>@Contact.EmailAddress</h4>
+    <br />
+
+}
+else
+{
+    <p>Loading...</p>
+}
+<div style="float:right;">
+    <h2>Add Clients</h2>
+    @if (Clients == null)
+    {
+        <p>loading...</p>
+    }
+    else
+    {
+
+        @foreach (var client in Cexcept)
+        {
+            <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(client, eventArgs.Value); }" style="font-size: 150%; font-family: Times New Roman, Times, serif" />@client.Name<br />
+
+
+
+        }
+
+
+    }
+</div>
+<div>
+    <h2>Delete Clients:</h2>
+    @if (ClientsOfContact != null)
+    {
+
+
+        @foreach (var client in ClientsOfContact)
+        {
+
+            <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedDel(client, eventArgs.Value); }" />
+            @client.Name
+            <br />
+        }
+
+    }
+    <a class="btn btn-primary" href="manage/contacts/viewcontact/@Id.ToString()" role="button">Back</a>
+</div>
+<br />
+<button type="button" class="btn btn-primary" @onclick="SubmitSelected">Submit</button>
+
+@code{
+    [Parameter]
+    public string Id { get; set; }
+    private ContactModel Contact;
+    private List<ClientModel> ClientsOfContact;
+    private List<ClientModel> Clients;
+    private List<ClientModel> AddSelected;
+    private List<ClientModel> DelSelected;
+    private List<ClientModel> Cexcept;
+    protected override async Task OnInitializedAsync()
+    {
+        List<ContactModel> rep = await _db.GetContact(Int32.Parse(Id));
+
+        Contact = rep[0];
+        ClientsOfContact = await _db.GetClientsOfContact(Contact.ContactId);
+        Clients = await _db2.GetClients();
+        AddSelected = new List<ClientModel>();
+        DelSelected = new List<ClientModel>();
+        AssingCexcept();
+    }
+    protected List<ClientModel> AssingCexcept()
+    {
+        List<ClientModel> res = new List<ClientModel>();
+        int i = 0;
+        List<int> ids = new List<int>();
+        ids = ClientsOfContact.Select(x => x.ClientId).ToList();
+        while (i < Clients.Count)
+        {
+            if (!(ids.Contains(Clients[i].ClientId)))
+            {
+                res.Add(Clients[i]);
+            }
+            i++;
+        }
+        Cexcept = res;
+        return Cexcept;
+
+    }
+    public void CheckBoxClicked(ClientModel client, object checkedvalue)
+    {
+        if ((bool)checkedvalue)
+        {
+            if (!AddSelected.Contains(client))
+            {
+                AddSelected.Add(client);
+            }
+        }
+        else
+        {
+            if (AddSelected.Contains(client))
+            {
+                AddSelected.Remove(client);
+            }
+        }
+    }
+    public void CheckBoxClickedDel(ClientModel client, object checkedvalue)
+    {
+        if ((bool)checkedvalue)
+        {
+            if (!DelSelected.Contains(client))
+            {
+                DelSelected.Add(client);
+            }
+        }
+        else
+        {
+            if (DelSelected.Contains(client))
+            {
+                DelSelected.Remove(client);
+            }
+        }
+    }
+    public async Task SubmitSelected()
+    {
+        foreach (var client in AddSelected)
+        {
+            await _db.InsertLink(Contact.ContactId, client.ClientId);
+        }
+        foreach (var client in DelSelected)
+        {
+            await _db.DeleteLink(Contact.ContactId, client.ClientId);
+        }
+        AddSelected = new List<ClientModel>();
+        DelSelected = new List<ClientModel>();
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
+
+}

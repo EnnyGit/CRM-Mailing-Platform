@@ -16,15 +16,15 @@ namespace CRM_Model_Library
 
         public Task<List<UserModel>> GetUsers()
         {
-            string sql = "SELECT * FROM dbo.users";
+            string sql = "SELECT * FROM dbo.Users";
 
             return _db.LoadData<UserModel, dynamic>(sql, new { });
         }
 
         public Task InsertUser(UserModel user)
         {
-            string sql = @"INSERT INTO dbo.users(FirstName, LastName, Password, Email)
-                           values (@FirstName, @LastName, @Password, @Email);";
+            string sql = @"INSERT INTO dbo.Users(FirstName, LastName, Email)
+                           values (@FirstName, @LastName, @Email);";
 
             return _db.SaveData(sql, user);
         }

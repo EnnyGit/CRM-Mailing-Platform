@@ -1,6 +1,11 @@
 ﻿@page "/manage/clients"
+@using CRM_Model_Library
+@using CRM_Blazor_Server.ViewModels
+@inject IClientData _db
+
+
 <div style="align-items:end; float:right;">
-    <button type="button" class="btn btn-primary">Create</button>
+    <a class="btn btn-primary" href="manage/clients/create" role="button">Create</a>
 </div>
 <h3>Clients</h3>
 <ul class="nav nav-pills nav-justified">
@@ -10,137 +15,51 @@
     <li class="nav-item">
         <a class="nav-link active" href="manage/clients">Clients</a>
     </li>
-    
+
     <li class="nav-item">
         <a class="nav-link" href="manage/lables">lables</a>
     </li>
 </ul>
+
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">id</th>
+            <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Contacts</th>
-            
+
         </tr>
     </thead>
-    <tbody>
-        @foreach (var client in Clients)
-        {
-            <tr>
-                <th scope="row">@client.ClientId</th>
-                <td>@client.Name</td>
-                <td>
-                    <ul>
-                        @foreach(var contact in GetContactsByClient(client))
-                        {
-                            <li>@contact.FirstName @contact.LastName</li>
-                        }
-                    </ul>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-@code {
-    List<ContactModel> Contacts = new List<ContactModel>
+    @if (Clients == null)
     {
-        new ContactModel
-        {
-            ContactId = 1,
-            FirstName = "Jonas",
-            LastName = "de Boer",
-            EmailAddress = "jonasdeboer@gmail.com"
-        },
-        new ContactModel
-        {
-            ContactId = 2,
-            FirstName = "Enny",
-            LastName = "Adeoye",
-            EmailAddress = "ennyadeaoye@gmail.com"
-        },
-        new ContactModel
-        {
-            ContactId = 3,
-            FirstName = "Ilias",
-            LastName = "el Bouchtaoui",
-            EmailAddress = "iliaselbouchtaoui@gmail.com"
-        },
-        new ContactModel
-        {
-            ContactId = 4,
-            FirstName = "Ali",
-            LastName = "Aliawi",
-            EmailAddress = "alialiawi@gmail.com"
-        },
-        new ContactModel
-        {
-            ContactId = 5,
-            FirstName = "Dennis",
-            LastName = "Futselaar",
-            EmailAddress = "dennisfutselaar@gmail.com"
-        }
-    };
-    List<ClientModel> Clients = new List<ClientModel>
-    {
-        new ClientModel
-        {
-            ClientId = 1,
-            Name = "Microsoft"
-        },
-        new ClientModel
-        {
-            ClientId = 2,
-            Name = "Apple"
-        },
-        new ClientModel
-        {
-            ClientId = 3,
-            Name = "Tesla"
-        }
-
-    };
-    List<ClientContactLink> CCLinks = new List<ClientContactLink>
-    {
-        new ClientContactLink
-        {
-            ClientId = 1,
-            ContactId = 5
-        },
-        new ClientContactLink
-        {
-            ClientId = 2,
-            ContactId = 4
-        },
-        new ClientContactLink
-        {
-            ClientId = 3,
-            ContactId = 3
-        },
-        new ClientContactLink
-        {
-            ClientId = 3,
-            ContactId = 2
-        },
-        new ClientContactLink
-        {
-            ClientId = 2,
-            ContactId = 1
-        },
-        new ClientContactLink
-        {
-            ClientId = 1,
-            ContactId = 1
-        }
-    };
-    public List<ContactModel> GetContactsByClient(ClientModel client)
-    {
-
-
-        List<ClientContactLink> links = CCLinks.Where(link => link.ClientId == client.ClientId).ToList();
-        List<int> contactids = links.Select(link => link.ContactId).ToList();
-        List<ContactModel> res = Contacts.Where(contact => contactids.Contains(contact.ContactId)).ToList();
-
-        return res;
+        <tr>loading...</tr>
     }
+    else
+    {
+        <tbody>
+            @{ 
+                var i = 1;
+            }
+            @foreach (var client in Clients)
+            {
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@client.Name</td>
+                    <td><a class="btn btn-primary" href="manage/clients/viewclient/@client.ClientId.ToString()" role="button">Go To</a></td>
+                </tr>
+                i++;
+            }
+
+        </tbody>
+    }
+    </table>
+
+@code {
+    private List<ClientModel> Clients;
+    protected override async Task OnInitializedAsync()
+    {
+        Clients = await _db.GetClients();
+    }
+
+
+
 }

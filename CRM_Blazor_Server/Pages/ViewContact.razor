@@ -1,27 +1,29 @@
-﻿@page "/manage/labels/viewlabel/{Id}"
+﻿@page "/manage/contacts/viewcontact/{Id}"
 
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
 
-@inject ILabelData _db
+@inject IContactData _db
 @inject IDataAccess _DataAccess
 
-@if(Label != null)
+@if(Contact != null)
 {
-    <h1>@Label.Name</h1>
+    <h1>@Contact.FirstName @Contact.LastName</h1>
+    <br />
+    <h4>@Contact.EmailAddress</h4>
 
 }
 else
 {
     <p>Loading...</p>
 }
-@if(Contacts != null)
+@if(Clients != null)
 {
     <h4>Clients:</h4>
     <ul>
-        @foreach (var contact in Contacts)
+        @foreach (var client in Clients)
         {
-            <li>@contact.EmailAddress</li>
+            <li>@client.Name</li>
         }
     </ul>
 }
@@ -30,14 +32,14 @@ else
 @code{
     [Parameter]
     public string Id { get; set; }
-    private LabelModel Label;
-    private List<ContactModel> Contacts;
+    private ContactModel Contact;
+    private List<ClientModel> Clients;
 
     protected override async Task OnInitializedAsync()
     {
-        List<LabelModel> rep = await _db.GetLabel(Int32.Parse(Id));
+        List<ContactModel> rep = await _db.GetContact(Int32.Parse(Id));
         
-        Label = rep[0];
-        Contacts = await _db.GetContactsWithLabel(Label.LabelId);
+        Contact = rep[0];
+        Clients = await _db.GetClientsOfContact(Contact.ContactId);
     }
 }

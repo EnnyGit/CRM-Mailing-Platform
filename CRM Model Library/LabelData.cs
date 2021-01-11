@@ -16,7 +16,7 @@ namespace CRM_Model_Library
 
         public Task<List<LabelModel>> GetLabels()
         {
-            string sql = "SELECT * FROM dbo.Label";
+            string sql = @"SELECT * FROM dbo.Label";
 
             return _db.LoadData<LabelModel, dynamic>(sql, new { });
         }

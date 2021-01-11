@@ -31,7 +31,7 @@
 <div>
     @if (Label != null)
     {
-        <h1>@Label.Name</h1>
+        <h1>@Label.LabelName</h1>
 
     }
     else
@@ -50,7 +50,7 @@
         
     }
     
-    <a class="btn btn-primary" href="manage/clients/viewclient/@Id.ToString()" role="button">Back</a>
+    <a class="btn btn-primary" href="manage/labels/viewlabel/@Id.ToString()" role="button">Back</a>
 </div>
 @code{
     [Parameter]

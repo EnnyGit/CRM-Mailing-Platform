@@ -2,6 +2,7 @@
 
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
+@inject NavigationManager NavigationManager
 
 @inject IContactData _db
 
@@ -10,26 +11,26 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
     <lable>First name:</lable>
-    
+
     <InputText class="form-control" @bind-Value="newcontact.FirstName"></InputText>
-    
+
     <lable>Last name:</lable>
-    
+
     <InputText class="form-control" @bind-Value="newcontact.LastName"></InputText>
-    
-    
+
+
     <lable>Email address:</lable>
-    
+
     <InputText class="form-control" @bind-Value="newcontact.EmailAddress"></InputText>
-    
+
     <button class="btn btn-success" type="submit">Create Contact</button>
     <a href="manage/contacts" class="btn btn-primary" type="Continue">Back</a>
-    
+
 </EditForm>
 
 @code {
     private DisplayContactModel newcontact = new DisplayContactModel();
-    
+
     private async Task InsertContact()
     {
         ContactModel contact = new ContactModel
@@ -42,5 +43,7 @@
         await _db.InsertContact(contact);
 
         newcontact = new DisplayContactModel();
+        NavigationManager.NavigateTo("manage/contacts", forceLoad: true);
+
     }
 }

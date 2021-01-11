@@ -23,8 +23,8 @@ namespace CRM_Model_Library
 
         public Task InsertLabel(LabelModel label)
         {
-            string sql = @"INSERT INTO dbo.Label(Name)
-                           values (@Name);";
+            string sql = @"INSERT INTO dbo.Label(LabelName)
+                           values (@LabelName);";
 
             return _db.SaveData(sql, label);
         }

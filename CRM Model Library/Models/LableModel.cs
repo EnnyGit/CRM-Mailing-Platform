@@ -1,6 +1,6 @@
-public class LableModel
+public class LabelModel
 {
-	public int lableId { get; set; }
+	public int LabelId { get; set; }
 
 	public string Name { get; set; }
 }

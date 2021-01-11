@@ -1,18 +1,18 @@
 ﻿@page "/manage/lables/create"
-<h3>Create Lable</h3>
-<EditForm Model="Lable" OnSubmit="Create" >
+<h3>Create Label</h3>
+<EditForm Model="Label" OnSubmit="Create" >
     <div class="form-group">
         <lable>Name:</lable>
     </div>
     <div>
-        <InputText class="form-control" @bind-Value="@Lable.Name"></InputText>
+        <InputText class="form-control" @bind-Value="@Label.Name"></InputText>
     </div>
     <div>
-        <a href="manage/lables" class="btn btn-success" type="submit">Create Lable</a>
+        <a href="manage/labels" class="btn btn-success" type="submit">Create label</a>
     </div>
 </EditForm>
 @code {
-    LableModel Lable = new LableModel();
+    LabelModel Label = new LabelModel();
 
     private void Create()
     {

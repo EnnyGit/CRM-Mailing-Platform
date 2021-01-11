@@ -4,27 +4,7 @@
 @inject IUserData _db
 
 
-@if (loginState.IsLoggedIn.Equals(false))
-{
-    <h1 style="text-align:center">Login</h1>
 
-    <div style="text-align:center">
-        <label>Email </label>
-        <input id="Email: " name="Email" type="text" @bind-value="email" />
-    </div>
-    <div style=" text-align:center">
-        <label>Password </label>
-        <input id="Password" name="Password" type="password" @bind-value="password" />
-    </div>
-    <div style="text-align:center">
-        <button type="submit" @onclick=@HandleLogin>
-            Submit
-        </button>
-    </div>
-    
-}
-else
-{
     <div>
         <a class="btn-link" href="create_mail">Create Mail</a>
     </div>
@@ -49,40 +29,11 @@ else
             }
         </tbody>
     </table>
-}
+
 
 @code {
 
-    string email = "";
-    string password = "";
-    string message = "";
-    UserModel u;
-    async Task HandleLogin()
-    {
-        List<UserModel> finduser = await _db.FindUser(email);
-        if (finduser.Count == 1)
-        {
-            u = finduser[0];
-            if (password.Equals(u.Password)) {
-                loginState.SetLogin(true, u);
-                message = "Login Succesful.";
-            }
-            else
-            {
-                message = "Incorrect credentials.";
-            }
-        }
-        else
-        {
-            message = "Something went wrong.";
-        }
-    }
-    void HandleLogout()
-    {
-        email = "";
-        password = "";
-        loginState.SetLogin(false, null);
-    }
+    
     List<string> Names = new List<string> { "Jonas de Boer", "Enny Adeoye", "Dennis Futselaar", "Ali Aliawi", "Ilias El Bouchtaoui" };
 
 }

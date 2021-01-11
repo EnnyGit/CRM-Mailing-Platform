@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @implements IDisposable
-@inject LoginState loginState;
+@inject LoginState loginState
+@inject IUserData _db
 
 
 <div class="sidebar">
@@ -11,12 +12,65 @@
 </div>
 <div class="main">
     <div class="content px-4">
-        @Body
-    </div>
+        @if (loginState.IsLoggedIn.Equals(false))
+        {
+            <h1 style="text-align:center">Login</h1>
+
+            <div style="text-align:center">
+                <label>Email </label>
+                <input id="Email: " name="Email" type="text" @bind-value="email" />
+            </div>
+            <div style=" text-align:center">
+                <label>Password </label>
+                <input id="Password" name="Password" type="password" @bind-value="password" />
+            </div>
+            <div style="text-align:center">
+                <button type="submit" @onclick=@HandleLogin>
+                    Submit
+                </button>
+            </div>
+
+        }
+        else
+        {
+            @Body
+        }
+        </div>
 </div>
 }
 
 @code {
+    string email = "";
+    string password = "";
+    string message = "";
+    UserModel u;
+    async Task HandleLogin()
+    {
+        List<UserModel> finduser = await _db.FindUser(email);
+        if (finduser.Count == 1)
+        {
+            u = finduser[0];
+            if (password.Equals(u.Password))
+            {
+                loginState.SetLogin(true, u);
+                message = "Login Succesful.";
+            }
+            else
+            {
+                message = "Incorrect credentials.";
+            }
+        }
+        else
+        {
+            message = "Something went wrong.";
+        }
+    }
+    void HandleLogout()
+    {
+        email = "";
+        password = "";
+        loginState.SetLogin(false, null);
+    }
     protected override void OnInitialized()
     {
         loginState.OnChange += StateHasChanged;

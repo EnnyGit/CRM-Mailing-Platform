@@ -1,10 +1,12 @@
-﻿@page "/manage/lables"
+﻿@page "/manage/labels"
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
 @inject ILabelData _db
 
 <div style="align-items:end; float:right;">
+
     <a class="btn btn-primary" href="manage/labels/create" role="button">Create</a>
+
 </div>
 <h3>Contacts</h3>
 
@@ -17,10 +19,10 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link active" href="manage/lables">lables</a>
+        <a class="nav-link active" href="manage/labels">labels</a>
     </li>
 </ul>
-<table class="table">
+<table class="tabel">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -42,7 +44,7 @@
                 <tr>
                     <th scope="row">@i</th>
                     <td>@model.Name</td>
-                    <td><a class="btn btn-primary" href="manage/contacts/viewcontact/@model.LabelId.ToString()" role="button">Go To</a></td>
+                    <td><a class="btn btn-primary" href="manage/contacts/ViewLabel/@model.LabelId.ToString()" role="button">Go to</a></td>
                 </tr>
 
                 i++;

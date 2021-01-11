@@ -26,6 +26,17 @@ else
             <li>@client.Name</li>
         }
     </ul>
+
+}
+@if(Labels != null)
+{
+    <h4>Labels:</h4>
+    <ul>
+        @foreach(var label in Labels)
+        {
+            <li>@label.LabelName</li>
+        }
+    </ul>
 }
 <a class="btn btn-primary" href="manage/contacts" role="button">Back</a>
 <a class="btn btn-primary" href="manage/contacts/viewcontact/@Id.ToString()/editcontact" role="button">Edit contact</a>
@@ -34,6 +45,7 @@ else
     public string Id { get; set; }
     private ContactModel Contact;
     private List<ClientModel> Clients;
+    private List<LabelModel> Labels;
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,5 +53,6 @@ else
         
         Contact = rep[0];
         Clients = await _db.GetClientsOfContact(Contact.ContactId);
+        Labels = await _db.GetLabelsOfContact(Contact.ContactId);
     }
 }

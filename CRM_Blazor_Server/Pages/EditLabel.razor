@@ -18,7 +18,7 @@
 
         @foreach (var contact in Cexcept)
         {
-            <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(contact, eventArgs.Value); }" />@contact.FirstName @contact.LastName<br />
+            <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(contact, eventArgs.Value); }" />@contact.FirstName; @contact.LastName;<br />
 
 
 

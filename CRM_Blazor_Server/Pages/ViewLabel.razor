@@ -6,27 +6,28 @@
 @inject ILabelData _db
 @inject IDataAccess _DataAccess
 
-@if(Label != null)
+@if (Label != null)
 {
-    <h1>@Label.Name</h1>
+    <h1>Label.Name</h1>
 
 }
 else
 {
     <p>Loading...</p>
 }
-@if(Contacts != null)
+@if (Contacts != null)
 {
-    <h4>Clients:</h4>
+    <h4>Labels:</h4>
     <ul>
         @foreach (var contact in Contacts)
         {
-            <li>@contact.EmailAddress</li>
+            <li>@contact.FirstName @contact.LastName, @contact.EmailAddress</li>
+
         }
     </ul>
 }
-<a class="btn btn-primary" href="manage/contacts" role="button">Back</a>
-<a class="btn btn-primary" href="manage/contacts/viewcontact/@Id.ToString()/editcontact" role="button">Edit contact</a>
+<a class="btn btn-primary" href="manage/labels" role="button">Back</a>
+<a class="btn btn-primary" href="manage/labels/viewlabel/@Id.ToString()/editlabel" role="button">Add labels</a>
 @code{
     [Parameter]
     public string Id { get; set; }
@@ -36,7 +37,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         List<LabelModel> rep = await _db.GetLabel(Int32.Parse(Id));
-        
+
         Label = rep[0];
         Contacts = await _db.GetContactsWithLabel(Label.LabelId);
     }

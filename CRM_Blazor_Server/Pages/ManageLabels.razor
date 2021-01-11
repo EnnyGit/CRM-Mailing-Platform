@@ -4,7 +4,7 @@
 @inject ILabelData _db
 
 <div style="align-items:end; float:right;">
-    <a class="btn btn-primary" href="manage/contacts/create" role="button">Create</a>
+    <a class="btn btn-primary" href="manage/labels/create" role="button">Create</a>
 </div>
 <h3>Contacts</h3>
 
@@ -56,7 +56,7 @@
     private List<LabelModel> Label;
     protected override async Task OnInitializedAsync()
     {
-        Label = await _db.GetLables();
+        Label = await _db.GetLabels();
     }
 
 

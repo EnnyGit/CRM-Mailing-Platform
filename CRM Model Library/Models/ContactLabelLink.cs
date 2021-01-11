@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-    public class ContactLableLink
+    public class ContactLabelLink
     {
         public int LableId { get; set; }
 

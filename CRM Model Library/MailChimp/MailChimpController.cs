@@ -35,7 +35,7 @@ namespace CRM_Model_Library
             }
             catch (Exception ex)
             {
-                //TODO: Error message "httpStatusCodeResult(HttpStatusCode.ServiceUnavailable, ex.Message)"
+                //TODO: Error message "httpStatusCodeResult(HttpStatusCode.ServiceUnavaiLabel, ex.Message)"
                 var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(campaignRequest);
                 return model;
             }

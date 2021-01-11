@@ -7,6 +7,7 @@ namespace CRM_Model_Library
     public interface ICampaignController
     {
         Task CreateRegularCampaign(string campaignTitle);
-        Task<IEnumerable<MailChimp.Net.Models.Campaign>> GetLatestCampaign();
+        Task<IEnumerable<Campaign>> GetLatestCampaign();
+        Task UpdateCampaign(Campaign campaign);
     }
 }

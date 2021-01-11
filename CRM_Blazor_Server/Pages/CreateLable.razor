@@ -1,22 +1,26 @@
-﻿@page "/manage/lables/create"
-<h3>Create Lable</h3>
-<EditForm Model="Lable" OnSubmit="Create" >
+﻿@page "/manage/Labels/create"
+
+@using CRM_Model_Library
+@using CRM_Blazor_Server.ViewModels
+
+<h3>Create Label</h3>
+<EditForm Model="Label" OnSubmit="Create">
     <div class="form-group">
         <lable>Name:</lable>
     </div>
     <div>
-        <InputText class="form-control" @bind-Value="@Lable.Name"></InputText>
+        <InputText class="form-control" @bind-Value="@Label.LabelName"></InputText>
     </div>
     <div>
-        <a href="manage/lables" class="btn btn-success" type="submit">Create Lable</a>
+        <a href="manage/Labels" class="btn btn-success" type="submit">Create Label</a>
     </div>
 </EditForm>
 @code {
-    LableModel Lable = new LableModel();
+    LableModel Label = new LableModel();
 
     private void Create()
     {
-        
+
         return;
     }
 }

@@ -22,7 +22,7 @@ namespace CRM_Model_Library
         }
 
         public Task InsertUser(UserModel user)
-        {
+        {      
             string sql = @"INSERT INTO dbo.Users(FirstName, LastName, Email)
                            values (@FirstName, @LastName, @Email);";
 

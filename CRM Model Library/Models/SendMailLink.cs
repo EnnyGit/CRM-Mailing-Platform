@@ -5,7 +5,7 @@ using System.Text;
 
     public class SendMailLink
     {
-        public int LableId { get; set; }
+        public int LabelId { get; set; }
 
         public int EmailId { get; set; }
 

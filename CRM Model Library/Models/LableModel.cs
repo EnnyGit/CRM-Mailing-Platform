@@ -1,8 +1,8 @@
 public class LableModel
 {
-	public int lableId { get; set; }
+	public int LabelId { get; set; }
 
-	public string Name { get; set; }
+	public string LabelName { get; set; }
 }
 
 

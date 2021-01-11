@@ -32,12 +32,14 @@ namespace CRM_Blazor_Server
             services.AddSingleton<IDataAccess, DataAccess>();
             services.AddTransient<IClientData, ClientData>();
             services.AddTransient<IContactData, ContactData>();
+            services.AddTransient<ILableData, LableData>();
 
             services.AddTransient<IUserData, UserData>();
             services.AddTransient<IMailChimpController, MailChimpController>();
             services.AddTransient<IMailChimpListController, MailChimpListController>();
             services.AddTransient<ICampaignController, CampaignController>();
             services.AddTransient<IMailChimpTemplateController, MailChimpTemplateController>();
+            services.AddTransient<ILabelCampaignLinkData, LabelCampaignLinkData>();
             //services.AddTransient<ICa>
         }
 

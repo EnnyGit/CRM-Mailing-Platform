@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-    public class ContactLableLink
+    public class ContactLabelLink
     {
-        public int LableId { get; set; }
+        public int LabelId { get; set; }
 
         public int ContactId { get; set; }
     }

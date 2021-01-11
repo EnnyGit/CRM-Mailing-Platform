@@ -9,16 +9,16 @@
 <EditForm Model="@newcontact" OnValidSubmit="@InsertContact">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    <lable>First name:</lable>
+    <Label>First name:</Label>
     
     <InputText class="form-control" @bind-Value="newcontact.FirstName"></InputText>
     
-    <lable>Last name:</lable>
+    <Label>Last name:</Label>
     
     <InputText class="form-control" @bind-Value="newcontact.LastName"></InputText>
     
     
-    <lable>Email address:</lable>
+    <Label>Email address:</Label>
     
     <InputText class="form-control" @bind-Value="newcontact.EmailAddress"></InputText>
     

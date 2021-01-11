@@ -1,8 +1,12 @@
-﻿@page "/manage/lables"
+﻿@page "/manage/Labels"
+
+@using CRM_Model_Library
+@using CRM_Blazor_Server.ViewModels
+
 <div style="align-items:end; float:right;">
-    <a class="btn btn-primary" href="manage/lables/create" role="button">Create</a>
+    <a class="btn btn-primary" href="manage/Labels/create" role="button">Create</a>
 </div>
-<h3>lables</h3>
+<h3>Labels</h3>
 <ul class="nav nav-pills nav-justified">
     <li class="nav-item">
         <a class="nav-link" href="manage/contacts">Contacts</a>
@@ -10,21 +14,24 @@
     <li class="nav-item">
         <a class="nav-link" href="manage/clients">Clients</a>
     </li>
-    
+
     <li class="nav-item">
-        <a class="nav-link active" href="manage/lables">lables</a>
+        <a class="nav-link active" href="manage/Labels">Labels</a>
     </li>
 </ul>
 <div class="model-group">
-    @foreach (var lable in lables)
+    @foreach (var Label in Labels)
     {
         <div class="model-item">
-            <div class="lable-model-title">
-                <h3 class="model-title">@lable.Name</h3>
+            <div class="Label-model-title">
+                <h3 class="model-title">@Label.LabelName</h3>
             </div>
         </div>
     }
 </div>
 @code {
-    List<LableModel> lables = new List<LableModel> { new LableModel { lableId = 1, Name = "Programmer" }, new LableModel { lableId = 2, Name = "Designer" }, new LableModel { lableId = 3, Name = "Consultant" }, new LableModel { lableId = 4, Name = "Recruiter" } };
+    List<LableModel> Labels = new List<LableModel> { new LableModel { LabelId = 1, LabelName = "Programmer" },
+        new LableModel { LabelId = 2, LabelName = "Designer" },
+        new LableModel { LabelId = 3, LabelName = "Consultant" },
+        new LableModel { LabelId = 4, LabelName = "Recruiter" } };
 }

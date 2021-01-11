@@ -4,6 +4,7 @@ using System.Text;
 using MailChimp.Net;
 using System.Threading.Tasks;
 using MailChimp.Net.Core;
+using MailChimp.Net.Models;
 
 namespace CRM_Model_Library
 {
@@ -23,7 +24,7 @@ namespace CRM_Model_Library
             await ApiKeyMailChimp.Manager.Campaigns.AddAsync(campaign);
         }
 
-        public async Task<IEnumerable<MailChimp.Net.Models.Campaign>> GetLatestCampaign()
+        public async Task<IEnumerable<Campaign>> GetLatestCampaign()
         {
             var campaignRequest = new CampaignRequest
             {
@@ -34,6 +35,11 @@ namespace CRM_Model_Library
 
             var campaign = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(campaignRequest);
             return campaign;
+        }
+
+        public async Task UpdateCampaign(Campaign campaign)
+        {
+            await ApiKeyMailChimp.Manager.Campaigns.UpdateAsync(campaign.Id, campaign);
         }
     }
 }

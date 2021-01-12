@@ -2,6 +2,7 @@
 @implements IDisposable
 @inject LoginState loginState
 @inject IUserData _db
+@inject ProtectedSessionStorage ProtectedSessionStore
 
 
 <div class="sidebar">
@@ -35,7 +36,7 @@
         {
             @Body
         }
-        </div>
+    </div>
 </div>
 }
 
@@ -43,27 +44,44 @@
     string email = "";
     string password = "";
     string message = "";
-    UserModel u;
+    static UserModel u;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        u = await ProtectedSessionStore.GetAsync<UserModel>("login");
+        if(u != null)
+        {
+            loginState.SetLogin(true, u);
+            await ProtectedSessionStore.SetAsync("login", u);
+            message = "Login Succesful.";
+        }
+    }
+
+
     async Task HandleLogin()
     {
-        List<UserModel> finduser = await _db.FindUser(email);
-        if (finduser.Count == 1)
-        {
-            u = finduser[0];
-            if (password.Equals(u.Password))
+        
+        
+            List<UserModel> finduser = await _db.FindUser(email);
+            if (finduser.Count == 1)
             {
-                loginState.SetLogin(true, u);
-                message = "Login Succesful.";
+                u = finduser[0];
+                if (password.Equals(u.Password))
+                {
+                    loginState.SetLogin(true, u);
+                    await ProtectedSessionStore.SetAsync("login", u);
+                    message = "Login Succesful.";
+                }
+                else
+                {
+                    message = "Incorrect credentials.";
+                }
             }
             else
             {
-                message = "Incorrect credentials.";
+                message = "Something went wrong.";
             }
-        }
-        else
-        {
-            message = "Something went wrong.";
-        }
+        
+        
     }
     void HandleLogout()
     {

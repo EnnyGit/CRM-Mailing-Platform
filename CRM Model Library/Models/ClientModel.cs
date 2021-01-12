@@ -6,6 +6,12 @@ public class ClientModel
 
     public string Name { get; set; }
 
+    public string SearchTerm()
+
+    {
+        return ClientId + Name;
+    }
+
     public override bool Equals(object obj)
     {
         if ((obj == null) || !this.GetType().Equals(obj.GetType()))

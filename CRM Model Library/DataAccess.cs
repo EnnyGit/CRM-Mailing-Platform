@@ -1,11 +1,9 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CRM_Model_Library
@@ -27,11 +25,11 @@ namespace CRM_Model_Library
             // we're done it will close it properly.
             using (IDbConnection connection = new SqlConnection(_config.GetConnectionString(ConnectionStringName)))
             {
-                // Query of Type <T> will map the data comming out into a model of type <T>. It will be 
-                // a set of those, one per row.
-                // Await is added here, to convert it to a list, because you cant convert it to a list while
-                // the query is being executed, you have to wait for the query to be done.
-                var data =  await connection.QueryAsync<T>(sql, parameters);
+                // Query of Type <T> will map the data comming out into a model of type <T>. It will
+                // be a set of those, one per row. Await is added here, to convert it to a list,
+                // because you cant convert it to a list while the query is being executed, you have
+                // to wait for the query to be done.
+                var data = await connection.QueryAsync<T>(sql, parameters);
 
                 // Return is seperated from the query, because it will be easier to debug.
                 return data.ToList();

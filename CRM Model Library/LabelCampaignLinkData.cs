@@ -1,7 +1,5 @@
 ﻿using Dapper;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CRM_Model_Library
@@ -13,13 +11,6 @@ namespace CRM_Model_Library
         public LabelCampaignLinkData(IDataAccess db)
         {
             _db = db;
-        }
-
-        public Task<List<LableCampaignLink>> GetLableCampaignLinks()
-        {
-            string sql = "SELECT * FROM dbo.LabelCampaignLink";
-
-            return _db.LoadData<LableCampaignLink, dynamic>(sql, new { });
         }
 
         public Task<List<LableCampaignLink>> GetLableCampaignLinksFromCampaign(string campaignId)
@@ -53,17 +44,5 @@ namespace CRM_Model_Library
 
             return _db.SaveData(sql, link);
         }
-
-        //public Task<List<ClientModel>> GetClient(int id)
-        //{
-        //    string sql = "SELECT * FROM dbo.Client WHERE ClientId = @Id";
-        //    return _db.LoadData<ClientModel, dynamic>(sql, new { Id = id });
-        //}
-
-        //public Task<List<bool>> IsLabelInCampaign(int labelId, string campaignId)
-        //{
-        //    string sql = "SELECT EXISTS(SELECT * FROM dbo.LabelCampaignLink WHERE (LabelId = @labelId AND CampaignId = @campaignId))";
-        //    return _db.LoadData<bool, dynamic>(sql, new { });
-        //}
     }
 }

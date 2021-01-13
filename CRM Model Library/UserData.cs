@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CRM_Model_Library
@@ -22,7 +20,7 @@ namespace CRM_Model_Library
         }
 
         public Task InsertUser(UserModel user)
-        {      
+        {
             string sql = @"INSERT INTO dbo.Users(FirstName, LastName, Email)
                            values (@FirstName, @LastName, @Email);";
 

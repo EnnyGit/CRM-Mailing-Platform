@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MailChimp.Net;
-using System.Threading.Tasks;
-using MailChimp.Net.Core;
+﻿using MailChimp.Net;
 
 namespace CRM_Model_Library
 {

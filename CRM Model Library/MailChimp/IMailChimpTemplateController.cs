@@ -7,7 +7,6 @@ namespace CRM_Model_Library
     public interface IMailChimpTemplateController
     {
         Task<IEnumerable<Template>> GetAllTemplates();
-        Task<string> GetThumbnailById(int templateId);
         Task<Template> GetTemplateById(int templateId);
         Task<Template> GetLatestTemplate();
     }

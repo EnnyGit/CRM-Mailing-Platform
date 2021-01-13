@@ -8,4 +8,3 @@ public class UserModel
 
     public string EmailAddress { get; set; }
 }
-

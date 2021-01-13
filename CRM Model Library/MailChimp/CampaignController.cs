@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MailChimp.Net;
-using System.Threading.Tasks;
-using MailChimp.Net.Core;
+﻿using MailChimp.Net.Core;
 using MailChimp.Net.Models;
-using CRM_Model_Library;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CRM_Model_Library
 {
@@ -28,7 +24,14 @@ namespace CRM_Model_Library
                     ListId = "0756e04de0",
                 }
             };
-            await ApiKeyMailChimp.Manager.Campaigns.AddAsync(campaign);
+            try
+            {
+                await ApiKeyMailChimp.Manager.Campaigns.AddAsync(campaign);
+            }
+            catch (MailChimpException e)
+            {
+                throw e;
+            }
         }
 
         public async Task<IEnumerable<Campaign>> GetLatestCampaign()
@@ -40,8 +43,15 @@ namespace CRM_Model_Library
                 SortOrder = CampaignSortOrder.DESC
             };
 
-            var campaign = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(campaignRequest);
-            return campaign;
+            try
+            {
+                var campaign = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(campaignRequest);
+                return campaign;
+            }
+            catch (MailChimpException e)
+            {
+                throw e;
+            }
         }
 
         public async Task UpdateCampaign(Campaign campaign)
@@ -52,7 +62,6 @@ namespace CRM_Model_Library
         public async Task AddListToCampaign(List<ContactModel> contactList, Campaign campaign)
         {
             var segmentMemberList = new List<Member>();
-            var list = contactList;
             var allMembers = await ApiKeyMailChimp.Manager.Members.GetAllAsync("0756e04de0");
             foreach (var contact in contactList)
             {
@@ -94,7 +103,7 @@ namespace CRM_Model_Library
             bool segmentExists = false;
 
             foreach (var s in allSegementsOfList)
-            {            
+            {
                 if (s.Name == campaign.Settings.Title + campaign.Id)
                 {
                     segmentExists = true;
@@ -110,77 +119,10 @@ namespace CRM_Model_Library
                 await ApiKeyMailChimp.Manager.ListSegments.AddAsync("0756e04de0", segment);
             }
 
-            //var segment = new Segment
-            //{
-            //    Name = campaign.Settings.Title + campaign.Id,
-            //    EmailAddresses = emailList
-            //};
-
-            await SendCampaign2(campaign);
-
-            // 1: Alle contacts krijgen van de Labellinks, deze zet je in een lijst (geen duplicates)
-            // 2: Alle contacs van contactLinks toevoegen aan de lijst. (geen duplicates)
-            // 3: Maak een nieuwe .net.list aan, deze list ID voeg je toe aan de members.
-            // 4: Al deze contacts omzetten in een .net.member.
-            // 5: Maak je een .net.List en voeg je alle members toe.
-            // 6: voeg je deze list(id) toe aan de campaign.
+            await SendCampaign(campaign);
         }
 
-        // Testing Method
         public async Task SendCampaign(Campaign campaign)
-        {
-            var member = new Member
-            {
-                EmailAddress = "0989054@hr.nl",
-                StatusIfNew = Status.Subscribed,
-                Status = Status.Subscribed,
-                EmailType = "html",
-                MergeFields = new Dictionary<string, object>
-                    {
-                        {"FNAME", "Ali"},
-                        {"LNAME", "AliTest"}
-                    }
-            };
-
-            await ApiKeyMailChimp.Manager.Members.AddOrUpdateAsync("0756e04de0", member);
-
-            var segment = new Segment
-            {
-                EmailAddresses = new List<string>() { "0980471@hr.nl" },
-                Name = "CampaignName+ID"
-            };
-
-
-
-            await ApiKeyMailChimp.Manager.ListSegments.AddAsync("0756e04de0", segment);
-
-            //segemntId 3356039
-
-
-            var list = await ApiKeyMailChimp.Manager.Lists.GetAsync("0756e04de0");
-            await ApiKeyMailChimp.Manager.ListSegments.AddMemberAsync("0756e04de0", "3356039", member);
-            var allSegementsOfList = await ApiKeyMailChimp.Manager.ListSegments.GetAllAsync("0756e04de0");
-            foreach (var s in allSegementsOfList)
-            {
-                var segmentId = s.Id;
-            }
-            var allMembersOfSegment = ApiKeyMailChimp.Manager.ListSegments.GetAllMembersAsync("0756e04de0", "3356039");
-            int i;
-            i = 10;
-
-            //var testCampaign = new Campaign
-            //{
-            //    Recipients = new Recipient
-            //    {
-            //        SegmentOptions = new SegmentOptions
-            //        {
-            //            SavedSegmentId = "segmentId";
-            //        }
-            //    }
-            //};
-        }
-
-        public async Task SendCampaign2(Campaign campaign)
         {
             var allSegementsOfList = await ApiKeyMailChimp.Manager.ListSegments.GetAllAsync("0756e04de0");
             int segmentId = 0;
@@ -197,13 +139,15 @@ namespace CRM_Model_Library
                 SavedSegmentId = segmentId
             };
 
-            await ApiKeyMailChimp.Manager.Campaigns.AddOrUpdateAsync(campaign);
-            var list = await ApiKeyMailChimp.Manager.Lists.GetAsync(campaign.Recipients.ListId);
-
-            await ApiKeyMailChimp.Manager.Campaigns.SendAsync(campaign.Id);
+            try
+            {
+                await ApiKeyMailChimp.Manager.Campaigns.AddOrUpdateAsync(campaign);
+                await ApiKeyMailChimp.Manager.Campaigns.SendAsync(campaign.Id);
+            }
+            catch (MailChimpException e)
+            {
+                throw e;
+            }
         }
     }
 }
-
-
-

@@ -9,8 +9,12 @@
 
 <h3>Creating Campaign</h3>
 <p>
-    <label>Campaign Title</label>
-    <input type="text" @bind="campaignTitle">
+    <br />
+    <div>
+        <label>Enter Campaign title: </label>
+        <input type="text" @bind="campaignTitle">
+    </div>
+    <br />
     <button class="btn btn-primary" type="submit" @onclick="@CreateCampaignWithTitle">Confirm Name</button>
     <a class="btn btn-primary" href="#" role="button" style="float:left;margin-right: 1%;">Back</a>
 </p>
@@ -29,8 +33,6 @@
         {
             campaign = c;
         }
-
-        //NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
         NavigationManager.NavigateTo($"update_campaign/{campaign.Id.ToString()}", true);
     }
 

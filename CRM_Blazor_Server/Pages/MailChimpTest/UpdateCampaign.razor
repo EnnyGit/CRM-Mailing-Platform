@@ -1,7 +1,6 @@
 ﻿@page "/update_campaign/{Id}"
 
 @using CRM_Model_Library
-@using MailChimp.Net;
 @using CRM_Blazor_Server.ViewModels
 
 @inject IMailChimpController _controller
@@ -102,7 +101,11 @@ else
         <div>
             <button @onclick="@save" type="submit" class="btn btn-primary">Save</button>
             <a class="btn btn-primary" href="#" role="button">Back</a>
-            <button @onclick="@SendMail" type="submit" class="btn btn-danger">Send Mail</button>
+            @if (CampaignReadyToSend())
+            {
+                <button @onclick="@SendMail" type="submit" class="btn btn-danger">Send Mail</button>
+            }
+            
         </div>
     </EditForm>
 }
@@ -110,9 +113,6 @@ else
 @code {
     [Parameter]
     public string Id { get; set; }
-    //<a href="https://us7.admin.mailchimp.com/templates/create-template/"  class="btn btn-primary">Add Template</a>
-
-    //<img src="@GetThumbnail()" style="border:1px solid black;" width="120" height="151">
     private static MailChimp.Net.Models.Campaign campaign;
     private static DisplayCampaignModel newCampaign = new DisplayCampaignModel();
     private static MailChimp.Net.Models.List memberList;
@@ -121,16 +121,20 @@ else
     private List<ContactCampaignLink> contactCampaignLinks;
     private List<LableModel> labels;
     private List<LableCampaignLink> lableCampaignLinks;
-
     private int templateId;
 
-    //private void GetLablesOfCampaign()
-    //{
-    //    foreach (var label in labels)
-    //    {
-    //        campaign.Settings.la
-    //    }
-    //}
+    private bool CampaignReadyToSend()
+    {
+        if ((contactCampaignLinks != null || lableCampaignLinks != null) && (campaign.Settings.TemplateId != 0))
+        {
+            if (contactCampaignLinks.Count != 0 || lableCampaignLinks.Count != 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
 
     private bool IsLabelInCampaign(int labelId)
     {
@@ -167,7 +171,6 @@ else
         campaign.Settings.TemplateId = latestTemplate.Id;
         await _campaignController.UpdateCampaign(campaign);
         await save();
-        //NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     public async Task SendMail()
@@ -214,12 +217,6 @@ else
         }
     }
 
-    private async Task<bool> GetThumbnail()
-    {
-        var thumbnail = await _templateController.GetThumbnailById(templateId);
-        return true;
-    }
-
     private async Task EditDuplicateTemplate(int templateId)
     {
         var duplicatetemplate = await _templateController.GetTemplateById(templateId);
@@ -242,10 +239,6 @@ else
         if (memberList.CampaignDefaults is null)
         {
             newCampaign.FromEmail = "ChangeThis@gmail.com";
-            //memberList.CampaignDefaults.FromEmail = "ChangeThis@gmail.com";
-            //memberList.CampaignDefaults.FromName = "ChangeThis";
-            //memberList.CampaignDefaults.Language = "";
-            //memberList.CampaignDefaults.Subject = "";
         }
         else
         {
@@ -253,21 +246,13 @@ else
         }
     }
 
-    //protected async Task GetCampaignAudience()
-    //{
-    //    list = await _listController.GetDetailOfList(campaign.Recipients.ListId);
-    //}
-
     private async Task AddOrUpdateCampaign()
     {
         campaign.Settings.Title = newCampaign.Title;
         campaign.Settings.SubjectLine = newCampaign.Subject;
         campaign.Settings.PreviewText = newCampaign.PreviewText;
         campaign.Settings.FromName = newCampaign.FromName;
-
-
         memberList = await _listController.GetDetailOfList(campaign.Recipients.ListId);
-
         memberList.CampaignDefaults = new MailChimp.Net.Models.CampaignDefaults
         {
             FromEmail = newCampaign.FromEmail,
@@ -276,12 +261,6 @@ else
             Subject = "Subject"
         };
         campaign.Settings.ReplyTo = memberList.CampaignDefaults.FromEmail;
-        //memberList.Contact = null;
-
-        //memberList.PermissionReminder = "Permission";
-        //memberList.Name = "Name";
-
-        //memberList.CampaignDefaults.FromEmail = newCampaign.FromEmail;
 
         await ApiKeyMailChimp.Manager.Lists.AddOrUpdateAsync(memberList);
         await ApiKeyMailChimp.Manager.Campaigns.AddOrUpdateAsync(campaign);
@@ -312,8 +291,6 @@ else
                 }
             }
         }
-
         await _campaignController.AddListToCampaign(contactList, campaign);
     }
-    //<a class="btn btn-primary" href="email_design" role="button">Choose Template</a>
 }

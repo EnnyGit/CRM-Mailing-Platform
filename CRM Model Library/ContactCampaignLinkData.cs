@@ -1,7 +1,5 @@
 ﻿using Dapper;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CRM_Model_Library
@@ -13,13 +11,6 @@ namespace CRM_Model_Library
         public ContactCampaignLinkData(IDataAccess db)
         {
             _db = db;
-        }
-
-        public Task<List<ContactCampaignLink>> GetContactCampaignLinks()
-        {
-            string sql = "SELECT * FROM dbo.ContactCampaignLink";
-
-            return _db.LoadData<ContactCampaignLink, dynamic>(sql, new { });
         }
 
         public Task<List<ContactCampaignLink>> GetContactCampaignLinksFromCampaign(string campaignId)

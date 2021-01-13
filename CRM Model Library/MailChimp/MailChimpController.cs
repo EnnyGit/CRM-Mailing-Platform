@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MailChimp.Net;
-using System.Threading.Tasks;
-using MailChimp.Net.Core;
+﻿using MailChimp.Net.Core;
 using MailChimp.Net.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CRM_Model_Library
 {
     public class MailChimpController : IMailChimpController
     {
-        private CampaignController CampaignBuilder = new CampaignController();
-
-        public async Task<IEnumerable<MailChimp.Net.Models.Campaign>> SentCampaigns()
+        public async Task<IEnumerable<Campaign>> SentCampaigns()
         {
-            //await Manager.Campaigns.AddAsync(CampaignBuilder.CreateCampaign());
-           
             var campaignRequest = new CampaignRequest
             {
                 Limit = 999,
@@ -28,30 +21,36 @@ namespace CRM_Model_Library
                 var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(campaignRequest);
                 return model;
             }
-            catch (MailChimpException mce)
+            catch (MailChimpException e)
             {
-                //TODO: Error message "httpStatusCodeResult(HttpStatusCode.BadGateway, mce.Message)"
-                var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(campaignRequest);
-                return model;
-            }
-            catch (Exception ex)
-            {
-                //TODO: Error message "httpStatusCodeResult(HttpStatusCode.ServiceUnavaiLabel, ex.Message)"
-                var model = await ApiKeyMailChimp.Manager.Campaigns.GetAllAsync(campaignRequest);
-                return model;
+                throw e;
             }
         }
 
-        public async Task<IEnumerable<MailChimp.Net.Models.List>> GetLists()
+        public async Task<IEnumerable<List>> GetLists()
         {
-            var model = await ApiKeyMailChimp.Manager.Lists.GetAllAsync();
-            return model;
+            try
+            {
+                var model = await ApiKeyMailChimp.Manager.Lists.GetAllAsync();
+                return model;
+            }
+            catch (MailChimpException e)
+            {
+                throw e;
+            }
         }
 
-        public async Task<IEnumerable<MailChimp.Net.Models.Member>> GetMembers()
+        public async Task<IEnumerable<Member>> GetMembers()
         {
-            var model = await ApiKeyMailChimp.Manager.Members.GetAllAsync("0756e04de0");
-            return model;
+            try
+            {
+                var model = await ApiKeyMailChimp.Manager.Members.GetAllAsync("0756e04de0");
+                return model;
+            }
+            catch (MailChimpException e)
+            {
+                throw e;
+            }
         }
     }
 }

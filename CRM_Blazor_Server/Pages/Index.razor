@@ -9,7 +9,6 @@
 
 <a class="btn btn-primary" href="/create_mail" style="float:left;margin-right: 1%;">Create Campaign</a>
 
-
 @if (campaigns is null)
 {
     <p><em>Loading...</em></p>
@@ -22,7 +21,7 @@ else
                 <th>Name</th>
                 <th>Sent on</th>
                 <th>Created</th>
-                <th>Random</th>
+                <th>From</th>
                 <th>View mail</th>
             </tr>
         </thead>
@@ -34,9 +33,16 @@ else
                 <td>@campaign.SendTime</td>
                 <td>@campaign.CreateTime</td>
                 <td>@campaign.Settings.FromName</td>
-                <! Fix target>
                 <td> <a href="@campaign.ArchiveUrl" target="_blank">View &raquo;</a></td>
-                <td> <a class="btn btn-primary" href="update_campaign/@campaign.Id.ToString()" role="button" style="float:left;margin-right: 1%;">Edit</a></td>
+                @if (campaign.Status != "sent")
+                {
+                    <td> <a class="btn btn-primary" href="update_campaign/@campaign.Id.ToString()" role="button" style="float:left;margin-right: 1%;">Edit</a></td>
+                }
+                else
+                {
+                    <td> <a class="btn btn-primary" href="https://us7.admin.mailchimp.com/campaigns/show?id=@campaign.WebId" target="_blank" role="button" style="float:left;margin-right: 1%;">Report</a></td>
+                }
+
             </tr>
             }
         </tbody>

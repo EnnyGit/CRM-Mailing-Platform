@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using MailChimp.Net.Core;
+﻿using MailChimp.Net.Core;
 using MailChimp.Net.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CRM_Model_Library
 {
@@ -11,31 +9,48 @@ namespace CRM_Model_Library
     {
         public async Task<IEnumerable<Template>> GetAllTemplates()
         {
-            var templates = await ApiKeyMailChimp.Manager.Templates.GetAllAsync();
-            return templates;
+            try
+            {
+                var templates = await ApiKeyMailChimp.Manager.Templates.GetAllAsync();
+                return templates;
+            }
+            catch (MailChimpException e)
+            {
+                throw e;
+            }
         }
 
         public async Task<Template> GetTemplateById(int templateId)
         {
-            var template = await ApiKeyMailChimp.Manager.Templates.GetAsync(templateId);
-            return template;
-        }
-
-        public async Task<string> GetThumbnailById(int templateId)
-        {
-            var template = await GetTemplateById(templateId);
-            return template.Thumbnail; 
+            try
+            {
+                var template = await ApiKeyMailChimp.Manager.Templates.GetAsync(templateId);
+                return template;
+            }
+            catch (MailChimpException e)
+            {
+                throw e;
+            }
         }
 
         public async Task<Template> GetLatestTemplate()
         {
+            IEnumerable<Template> temporaryTemplate;
             var request = new TemplateRequest
             {
                 SortByField = TemplateSortField.DateCreated,
                 Count = 1,
             };
 
-            var temporaryTemplate = await ApiKeyMailChimp.Manager.Templates.GetAllAsync(request);
+            try
+            {
+                temporaryTemplate = await ApiKeyMailChimp.Manager.Templates.GetAllAsync(request);
+            }
+            catch (MailChimpException e)
+            {
+                throw e;
+            }
+
             Template template = new Template();
             foreach (var t in temporaryTemplate)
             {

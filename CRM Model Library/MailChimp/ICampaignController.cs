@@ -11,6 +11,5 @@ namespace CRM_Model_Library
         Task UpdateCampaign(Campaign campaign);
         Task AddListToCampaign(List<ContactModel> contactList, Campaign campaign);
         Task SendCampaign(Campaign campaign);
-        Task SendCampaign2(Campaign campaign);
     }
 }

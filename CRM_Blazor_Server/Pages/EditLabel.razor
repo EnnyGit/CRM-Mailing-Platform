@@ -1,15 +1,15 @@
-﻿@page "/manage/clients/viewclient/{Id}/editclient"
+﻿@page "/manage/labels/viewlabel/{Id}/editlabel"
 
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
 
-@inject IClientData _db
+@inject ILabelData _db
 @inject IContactData _db2
 @inject IDataAccess _DataAccess
 @inject NavigationManager NavigationManager
-@if (Client != null)
+@if (Label != null)
 {
-    <h1>@Client.Name</h1>
+    <h1>@Label.LabelName</h1>
 
 }
 else
@@ -39,11 +39,11 @@ else
 </div>
 <div style="font-size:125%">
 
-    @if (ContactsOfClient != null)
+    @if (ContactsWithLabel != null)
     {
         <h4>Delete Contacts:</h4>
 
-        @foreach (var contact in ContactsOfClient)
+        @foreach (var contact in ContactsWithLabel)
         {
 
             <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedDel(contact, eventArgs.Value); }" />@contact.GetInfo()<br />
@@ -51,23 +51,23 @@ else
 
     }
 
-    <a class="btn btn-primary" href="manage/clients/viewclient/@Id.ToString()" role="button">Back</a>
+    <a class="btn btn-primary" href="manage/labels/viewlabel/@Id.ToString()" role="button">Back</a>
 </div>
 @code{
     [Parameter]
     public string Id { get; set; }
-    private ClientModel Client;
-    private List<ContactModel> ContactsOfClient;
+    private LabelModel Label;
+    private List<ContactModel> ContactsWithLabel;
     private List<ContactModel> Contacts;
     private List<ContactModel> AddSelected;
     private List<ContactModel> DelSelected;
     private List<ContactModel> Cexcept;
     protected override async Task OnInitializedAsync()
     {
-        List<ClientModel> rep = await _db.GetClient(Int32.Parse(Id));
+        List<LabelModel> rep = await _db.GetLabel(Int32.Parse(Id));
 
-        Client = rep[0];
-        ContactsOfClient = await _db.GetContactsOfClient(Client.ClientId);
+        Label = rep[0];
+        ContactsWithLabel = await _db.GetContactsWithLabel(Label.LabelId);
         Contacts = await _db2.GetContacts();
         AddSelected = new List<ContactModel>();
         DelSelected = new List<ContactModel>();
@@ -78,7 +78,7 @@ else
         List<ContactModel> res = new List<ContactModel>();
         int i = 0;
         List<int> ids = new List<int>();
-        ids = ContactsOfClient.Select(x => x.ContactId).ToList();
+        ids = ContactsWithLabel.Select(x => x.ContactId).ToList();
         while (i < Contacts.Count)
         {
             if (!(ids.Contains(Contacts[i].ContactId)))
@@ -129,11 +129,11 @@ else
     {
         foreach (var contact in AddSelected)
         {
-            await _db.InsertLink(Client.ClientId, contact.ContactId);
+            await _db.InsertLink(Label.LabelId, contact.ContactId);
         }
         foreach (var contact in DelSelected)
         {
-            await _db.DeleteLink(Client.ClientId, contact.ContactId);
+            await _db.DeleteLink(Label.LabelId, contact.ContactId);
         }
         AddSelected = new List<ContactModel>();
         DelSelected = new List<ContactModel>();

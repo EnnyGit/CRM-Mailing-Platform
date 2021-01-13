@@ -5,57 +5,101 @@
 
 @inject IContactData _db
 @inject IClientData _db2
+@inject ILabelData _db3
 @inject IDataAccess _DataAccess
 @inject NavigationManager NavigationManager
-@if (Contact != null)
-{
-    <h1>@Contact.FirstName @Contact.LastName</h1>
-    <h4>@Contact.EmailAddress</h4>
-    <br />
-
-}
-else
-{
-    <p>Loading...</p>
-}
-<div style="float:right;">
-    <h2>Add Clients</h2>
-    @if (Clients == null)
+<div style="width:100vw">
+    @if (Contact != null)
     {
-        <p>loading...</p>
+        <h1>@Contact.FirstName @Contact.LastName</h1>
+        <h4>@Contact.EmailAddress</h4>
+        <br />
+
     }
     else
     {
-
-        @foreach (var client in Cexcept)
-        {
-            <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(client, eventArgs.Value); }" style="font-size: 150%; font-family: Times New Roman, Times, serif" />@client.Name<br />
-
-
-
-        }
-
-
+        <p>Loading...</p>
     }
 </div>
-<div>
-    <h2>Delete Clients:</h2>
-    @if (ClientsOfContact != null)
-    {
-
-
-        @foreach (var client in ClientsOfContact)
+<div style="width:100vw;overflow:hidden">
+    <div style="float:left;width:40vw">
+        <h4>Delete Clients:</h4>
+        @if (ClientsOfContact != null)
         {
 
-            <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedDel(client, eventArgs.Value); }" />
-            @client.Name
-            <br />
-        }
 
-    }
-    <a class="btn btn-primary" href="manage/contacts/viewcontact/@Id.ToString()" role="button">Back</a>
+            @foreach (var client in ClientsOfContact)
+            {
+
+                <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedDel(client, eventArgs.Value); }" />
+                @client.Name
+                <br />
+            }
+
+        }
+    </div>
+    <div style="overflow:hidden">
+        <h4>Add Clients</h4>
+        @if (Clients == null)
+        {
+            <p>loading...</p>
+        }
+        else
+        {
+
+            @foreach (var client in Cexcept)
+            {
+                <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(client, eventArgs.Value); }" style="font-size: 150%; font-family: Times New Roman, Times, serif" />@client.Name<br />
+
+
+
+            }
+
+
+        }
+    </div>
 </div>
 <br />
+<br />
+<br />
+<div style="width:100vw;overflow:hidden">
+    <div style="float:left;width:40vw">
+        <h4>Delete Labels:</h4>
+        @if (LabelsOfContact != null)
+        {
+
+
+            @foreach (var label in LabelsOfContact)
+            {
+
+                <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedDelLabel(label, eventArgs.Value); }" />
+                @label.LabelName
+                <br />
+            }
+
+        }
+
+    </div>
+    <div style="overflow:hidden">
+        <h4>Add Labels</h4>
+        @if (Labels == null)
+        {
+            <p>loading...</p>
+        }
+        else
+        {
+
+            @foreach (var label in Lexcept)
+            {
+                <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedLabel(label, eventArgs.Value); }" style="font-size: 150%; font-family: Times New Roman, Times, serif" />@label.LabelName<br />
+
+            }
+
+
+        }
+    </div>
+</div>
+<a class="btn btn-primary" href="manage/contacts/viewcontact/@Id.ToString()" role="button">Back</a>
 <button type="button" class="btn btn-primary" @onclick="SubmitSelected">Submit</button>
 
 @code{
@@ -66,7 +110,12 @@ else
     private List<ClientModel> Clients;
     private List<ClientModel> AddSelected;
     private List<ClientModel> DelSelected;
+    private List<LabelModel> AddSelectedLabel;
+    private List<LabelModel> DelSelectedLabel;
+    private List<LabelModel> Labels;
+    private List<LabelModel> LabelsOfContact;
     private List<ClientModel> Cexcept;
+    private List<LabelModel> Lexcept;
     protected override async Task OnInitializedAsync()
     {
         List<ContactModel> rep = await _db.GetContact(Int32.Parse(Id));
@@ -76,11 +125,17 @@ else
         Clients = await _db2.GetClients();
         AddSelected = new List<ClientModel>();
         DelSelected = new List<ClientModel>();
+        LabelsOfContact = await _db.GetLabelsOfContact(Contact.ContactId);
+        Labels = await _db3.GetLabels();
+        AddSelectedLabel = new List<LabelModel>();
+        DelSelectedLabel = new List<LabelModel>();
         AssingCexcept();
+        AssingLexcept();
     }
     protected List<ClientModel> AssingCexcept()
     {
         List<ClientModel> res = new List<ClientModel>();
+
         int i = 0;
         List<int> ids = new List<int>();
         ids = ClientsOfContact.Select(x => x.ClientId).ToList();
@@ -94,6 +149,25 @@ else
         }
         Cexcept = res;
         return Cexcept;
+
+    }
+    protected List<LabelModel> AssingLexcept()
+    {
+        List<LabelModel> res = new List<LabelModel>();
+
+        int i = 0;
+        List<int> ids = new List<int>();
+        ids = LabelsOfContact.Select(x => x.LabelId).ToList();
+        while (i < Labels.Count)
+        {
+            if (!(ids.Contains(Labels[i].LabelId)))
+            {
+                res.Add(Labels[i]);
+            }
+            i++;
+        }
+        Lexcept = res;
+        return Lexcept;
 
     }
     public void CheckBoxClicked(ClientModel client, object checkedvalue)
@@ -130,6 +204,40 @@ else
             }
         }
     }
+    public void CheckBoxClickedLabel(LabelModel label, object checkedvalue)
+    {
+        if ((bool)checkedvalue)
+        {
+            if (!AddSelectedLabel.Contains(label))
+            {
+                AddSelectedLabel.Add(label);
+            }
+        }
+        else
+        {
+            if (AddSelectedLabel.Contains(label))
+            {
+                AddSelectedLabel.Remove(label);
+            }
+        }
+    }
+    public void CheckBoxClickedDelLabel(LabelModel label, object checkedvalue)
+    {
+        if ((bool)checkedvalue)
+        {
+            if (!DelSelectedLabel.Contains(label))
+            {
+                DelSelectedLabel.Add(label);
+            }
+        }
+        else
+        {
+            if (DelSelectedLabel.Contains(label))
+            {
+                DelSelectedLabel.Remove(label);
+            }
+        }
+    }
     public async Task SubmitSelected()
     {
         foreach (var client in AddSelected)
@@ -140,8 +248,18 @@ else
         {
             await _db.DeleteLink(Contact.ContactId, client.ClientId);
         }
+        foreach (var label in AddSelectedLabel)
+        {
+            await _db3.InsertLink(label.LabelId, Contact.ContactId);
+        }
+        foreach (var label in DelSelectedLabel)
+        {
+            await _db3.DeleteLink(label.LabelId, Contact.ContactId);
+        }
         AddSelected = new List<ClientModel>();
         DelSelected = new List<ClientModel>();
+        AddSelectedLabel = new List<LabelModel>();
+        DelSelectedLabel = new List<LabelModel>();
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 

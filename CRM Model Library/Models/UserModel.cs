@@ -6,5 +6,6 @@ public class UserModel
 
     public string Password { get; set; }
 
-    public string EmailAddress { get; set; }
+    public string Email { get; set; }
 }
+

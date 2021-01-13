@@ -62,5 +62,11 @@ namespace CRM_Model_Library
             string sql = "DELETE FROM dbo.ClientContact WHERE ContactId = @coId AND ClientId = @clid";
             return _db.SaveData(sql, new { coId = contactId, clId = clientId });
         }
+        public Task<List<LabelModel>> GetLabelsOfContact(int contactId)
+        {
+            string sql = @"SELECT * FROM dbo.Label la INNER JOIN dbo.ContactLabel cl ON la.LabelId = cl.LabelId WHERE cl.ContactId = @Id";
+            return _db.LoadData<LabelModel, dynamic>(sql, new { Id = contactId });
+
+        }
     }
 }

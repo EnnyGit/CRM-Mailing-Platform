@@ -8,5 +8,7 @@ namespace CRM_Model_Library
         Task<List<UserModel>> GetUsers();
 
         Task InsertUser(UserModel user);
+        Task<List<UserModel>> GetUser(int id);
+        Task<List<UserModel>> FindUser(string email);
     }
 }

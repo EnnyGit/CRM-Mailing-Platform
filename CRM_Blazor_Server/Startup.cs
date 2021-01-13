@@ -27,6 +27,7 @@ namespace CRM_Blazor_Server
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddProtectedBrowserStorage();
             // TODO: Uitzoeken welke service wij moeten gebruiken. Inplaats  van "AddSingleton", kijk naar AddTransient.
             // Transient is gonna create an instance everytime we ask for one, Singleton creates one instance for the entire application.
             services.AddSingleton<IDataAccess, DataAccess>();
@@ -41,6 +42,11 @@ namespace CRM_Blazor_Server
             services.AddTransient<IMailChimpTemplateController, MailChimpTemplateController>();
             services.AddTransient<ILabelCampaignLinkData, LabelCampaignLinkData>();
             services.AddTransient<IContactCampaignLinkData, ContactCampaignLinkData>();
+
+
+            services.AddScoped<LoginState>();
+            services.AddTransient<ILabelData, LabelData>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -32,8 +32,8 @@ namespace CRM_Blazor_Server
             services.AddSingleton<IDataAccess, DataAccess>();
             services.AddTransient<IClientData, ClientData>();
             services.AddTransient<IContactData, ContactData>();
-
             services.AddTransient<IUserData, UserData>();
+            services.AddTransient<ILabelData, LabelData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

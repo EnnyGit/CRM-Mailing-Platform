@@ -20,6 +20,7 @@
         <a class="nav-link" href="manage/labels">labels</a>
     </li>
 </ul>
+<input class="form-control" placeholder="search" @oninput="(e => OnPublisherSearchTextChanged(e))" />
 <table class="table">
     <thead>
         <tr>
@@ -30,7 +31,7 @@
             <th scope="col">Go To</th>
         </tr>
     </thead>
-    @if (Contacts == null)
+    @if (FilterContacts == null)
     {
         <tr>loading...</tr>
     }
@@ -38,9 +39,9 @@
     {
         var i = 1;
         <tbody>
-            @foreach (var model in Contacts)
+            @foreach (var model in FilterContacts)
             {
-                
+
                 <tr>
                     <th scope="row">@i</th>
                     <td>@model.FirstName</td>
@@ -48,7 +49,7 @@
                     <td>@model.EmailAddress</td>
                     <td><a class="btn btn-primary" href="manage/contacts/viewcontact/@model.ContactId.ToString()" role="button">Go To</a></td>
                 </tr>
-                
+
                 i++;
             }
 
@@ -57,12 +58,21 @@
     }
 </table>
 @code {
-    private List<ContactModel> Contacts;
+    public List<ContactModel> Contacts;
+    public List<ContactModel> FilterContacts;
     protected override async Task OnInitializedAsync()
     {
         Contacts = await _db.GetContacts();
+        FilterContacts = Contacts;
     }
 
 
+    private void OnPublisherSearchTextChanged(ChangeEventArgs changeEventArgs)
+    {
+
+        string searchText = changeEventArgs.Value.ToString();
+
+        FilterContacts = Contacts.Where(c => c.SearchTerm().ToLower().Contains(searchText)).ToList();
+    }
 
 }

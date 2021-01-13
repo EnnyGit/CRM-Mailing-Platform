@@ -10,6 +10,12 @@ public class ContactModel
 
 	public string LastName { get; set; }
 
+    public string SearchTerm()
+    {
+        return EmailAddress + FirstName + LastName;
+    }
+
+
     public override bool Equals(object obj)
     {
         if ((obj == null) || !this.GetType().Equals(obj.GetType()))

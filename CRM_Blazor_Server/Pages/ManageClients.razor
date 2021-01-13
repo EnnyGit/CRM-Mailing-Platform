@@ -66,7 +66,7 @@
 
         string searchText = changeEventArgs.Value.ToString();
 
-        FilterClients = Clients.Where(c => c.SearchTerm().ToLower().Contains(searchText)).ToList();
+        FilterClients = Clients.Where(c => c.SearchTerm().Contains(searchText.ToLower())).ToList();
     }
 
 

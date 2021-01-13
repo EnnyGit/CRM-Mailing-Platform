@@ -8,7 +8,7 @@
 
 @if (Client != null)
 {
-    <h1>Client.Name</h1>
+    <h1>@Client.Name</h1>
 
 }
 else
@@ -17,17 +17,17 @@ else
 }
 @if (Contacts != null)
 {
-    <h4>Clients:</h4>
+    <h4>Contacts:</h4>
     <ul>
         @foreach (var contact in Contacts)
         {
-            <li>@contact.FirstName @contact.LastName, @contact.EmailAddress</li>
+            <li style="font-size:125%">@contact.GetInfo(true)</li>
 
         }
     </ul>
 }
 <a class="btn btn-primary" href="manage/clients" role="button">Back</a>
-<a class="btn btn-primary" href="manage/clients/viewclient/@Id.ToString()/editclient" role="button">Add clients</a>
+<a class="btn btn-primary" href="manage/clients/viewclient/@Id.ToString()/editclient" role="button">Edit Client</a>
 @code{
     [Parameter]
     public string Id { get; set; }

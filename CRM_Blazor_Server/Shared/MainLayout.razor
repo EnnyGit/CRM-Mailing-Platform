@@ -3,8 +3,10 @@
 @inject LoginState loginState
 @inject IUserData _db
 @inject ProtectedSessionStorage ProtectedSessionStore
+@inject NavigationManager NavigationManager
 
 <div class="sidebar">
+    
     @if (loginState.IsLoggedIn)
     {
         <NavMenu />
@@ -12,7 +14,7 @@
 </div>
 <div class="main">
     <div class="content px-4">
-        @if (loginState.IsLoggedIn.Equals(false) && register == false)
+        @if (loginState.IsLoggedIn == false && register == false)
         {
             <h1 style="text-align:center">Login</h1>
 
@@ -58,8 +60,8 @@
 
                 <InputText type="password" class="form-control" @bind-Value="newuser.Password"></InputText>
 
-                <button class="btn btn-success" type="submit" @onclick="InsertUser">Create User</button>
-                <button class="btn btn-success" type="button" @onclick="SwitchRegister">Back</button>
+                <button class="btn btn-primary" type="submit" @onclick="InsertUser">Create User</button>
+                <button class="btn btn-primary" type="button" @onclick="SwitchRegister">Back</button>
 
             </EditForm>
         }
@@ -69,23 +71,30 @@
         }
     </div>
 </div>
-}
+
 
 @code {
     bool register = false;
     string email = "";
     string password = "";
     string message = "";
-    static UserModel u;
+    static UserModel u = null;
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+
         u = await ProtectedSessionStore.GetAsync<UserModel>("login");
-        if(u != null)
+        if (u != null)
         {
             loginState.SetLogin(true, u);
             await ProtectedSessionStore.SetAsync("login", u);
             message = "Login Succesful.";
         }
+        if(loginState.IsLoggedIn == false)
+        {
+            await ProtectedSessionStore.SetAsync("login", null);
+        }
+
     }
 
     protected void SwitchRegister()
@@ -126,12 +135,7 @@
 
 
     }
-    void HandleLogout()
-    {
-        email = "";
-        password = "";
-        loginState.SetLogin(false, null);
-    }
+    
     protected override void OnInitialized()
     {
         loginState.OnChange += StateHasChanged;

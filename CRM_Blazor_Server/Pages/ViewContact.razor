@@ -5,10 +5,10 @@
 
 @inject IContactData _db
 @inject IDataAccess _DataAccess
-
+<div style="width:100vw">
 @if(Contact != null)
 {
-    <h1>@Contact.FirstName @Contact.LastName</h1>
+    <h1>@Contact.GetInfo()</h1>
     <br />
     <h4>@Contact.EmailAddress</h4>
 
@@ -17,27 +17,34 @@ else
 {
     <p>Loading...</p>
 }
-@if(Clients != null)
-{
-    <h4>Clients:</h4>
-    <ul>
-        @foreach (var client in Clients)
-        {
-            <li>@client.Name</li>
-        }
-    </ul>
+</div>
+<div style="overflow:hidden">
+    <div style="float:left">
+    @if(Clients != null)
+    {
+        <h4>Clients:</h4>
+        <ul>
+            @foreach (var client in Clients)
+            {
+                <li>@client.Name</li>
+            }
+        </ul>
 
-}
-@if(Labels != null)
-{
-    <h4>Labels:</h4>
-    <ul>
-        @foreach(var label in Labels)
-        {
-            <li>@label.LabelName</li>
-        }
-    </ul>
-}
+    }
+    </div>
+    <div style="overflow:hidden">
+    @if(Labels != null)
+    {
+        <h4>Labels:</h4>
+        <ul>
+            @foreach(var label in Labels)
+            {
+                <li>@label.LabelName</li>
+            }
+        </ul>
+    }
+    </div>
+</div>
 <a class="btn btn-primary" href="manage/contacts" role="button">Back</a>
 <a class="btn btn-primary" href="manage/contacts/viewcontact/@Id.ToString()/editcontact" role="button">Edit contact</a>
 @code{

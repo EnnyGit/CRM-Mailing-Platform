@@ -4,6 +4,7 @@ using System.Text;
 using MailChimp.Net;
 using System.Threading.Tasks;
 using MailChimp.Net.Core;
+using MailChimp.Net.Models;
 
 namespace CRM_Model_Library
 {

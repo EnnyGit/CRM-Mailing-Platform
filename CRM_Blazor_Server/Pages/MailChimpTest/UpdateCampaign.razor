@@ -9,7 +9,9 @@
 @inject IMailChimpTemplateController _templateController
 @inject ILableData _lableController
 @inject ILabelCampaignLinkData _lableCampaignLinkController
+@inject IContactCampaignLinkData _contactCampaignLinkController
 @inject ICampaignController _campaignController
+@inject IContactData _contactController 
 @inject NavigationManager NavigationManager
 
 @if (campaign is null || newCampaign is null)
@@ -42,30 +44,52 @@ else
             <InputText class="form-control" @bind-Value="@newCampaign.FromEmail"></InputText>
         </div>
         <div>
-            <div><lable>Add Labels</lable></div>
-            @if (labels == null && lableCampaignLinks == null)
-            {
-                <p>No available lablels...</p>
-            }
-            else
-            {
-                @foreach (var label in labels)
+            <div style="width: 200px; float:left; margin:10px">
+                <div><lable>Add Labels</lable></div>
+                @if (labels == null && lableCampaignLinks == null)
                 {
-                    if (IsLabelInCampaign(label.LabelId))
+                    <p>No available lablels...</p>
+                }
+                else
+                {
+                    @foreach (var label in labels)
                     {
-                        <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(label, eventArgs.Value); }" style="font-size: 150%; font-family: Times New Roman, Times, serif" checked />@label.LabelName<br />
-                    }
-                    else
-                    {
-                        <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(label, eventArgs.Value); }" style="font-size: 150%; font-family: Times New Roman, Times, serif" />@label.LabelName<br />
+                        if (IsLabelInCampaign(label.LabelId))
+                        {
+                            <input type="checkbox" @onchange="eventArgs => { LabelCheckBoxClicked(label, eventArgs.Value); }" style="font-size: 150%; font-family: Times New Roman, Times, serif" checked />@label.LabelName<br />
+                        }
+                        else
+                        {
+                            <input type="checkbox" @onchange="eventArgs => { LabelCheckBoxClicked(label, eventArgs.Value); }" style="font-size: 150%; font-family: Times New Roman, Times, serif" />@label.LabelName<br />
+                        }
                     }
                 }
-            }
+            </div>
+            <div style="width: 200px; float:left; margin:10px">
+                <div><lable>Add Contacts</lable></div>
+                @if (labels == null && lableCampaignLinks == null)
+                {
+                    <p>No available lablels...</p>
+                }
+                else
+                {
+                    @foreach (var contact in contacts)
+                    {
+                        if (IsContactInCampaign(contact.ContactId))
+                        {
+                            <input type="checkbox" @onchange="eventArgs => { ContactCheckBoxClicked(contact, eventArgs.Value); }" style="font-size: 150%; font-family: Times New Roman, Times, serif" checked />@(contact.FirstName + " ") @contact.LastName<br />
+                        }
+                        else
+                        {
+                            <input type="checkbox" @onchange="eventArgs => { ContactCheckBoxClicked(contact, eventArgs.Value); }" style="font-size: 150%; font-family: Times New Roman, Times, serif" />@(contact.FirstName + " ") @contact.LastName<br />
+                        }
+                    }
+                }
+            </div>
         </div>
         <br />
-        <div />
         <ValidationSummary />
-        <div>
+        <div style="clear:both">
             @if (campaign.Settings.TemplateId == 0)
             {
                 <a @onclick="@AddTemplateToCampaign" href="https://us7.admin.mailchimp.com/templates/create-template/" target="_blank">Add Template &raquo;</a>
@@ -78,6 +102,7 @@ else
         <div>
             <button @onclick="@save" type="submit" class="btn btn-primary">Save</button>
             <a class="btn btn-primary" href="#" role="button">Back</a>
+            <button @onclick="@SendMail" type="submit" class="btn btn-danger">Send Mail</button>
         </div>
     </EditForm>
 }
@@ -92,6 +117,8 @@ else
     private static DisplayCampaignModel newCampaign = new DisplayCampaignModel();
     private static MailChimp.Net.Models.List memberList;
     private static IEnumerable<MailChimp.Net.Models.Template> templates;
+    private List<ContactModel> contacts;
+    private List<ContactCampaignLink> contactCampaignLinks;
     private List<LableModel> labels;
     private List<LableCampaignLink> lableCampaignLinks;
 
@@ -117,6 +144,18 @@ else
         return false;
     }
 
+    private bool IsContactInCampaign(int contactid)
+    {
+        foreach (var link in contactCampaignLinks)
+        {
+            if (link.ContactId == contactid)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private async Task AddTemplateToCampaign()
     {
         var currentTemplate = await _templateController.GetLatestTemplate();
@@ -127,21 +166,31 @@ else
         }
         campaign.Settings.TemplateId = latestTemplate.Id;
         await _campaignController.UpdateCampaign(campaign);
-        save();
-        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
-
+        await save();
+        //NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
-    public void save()
+    public async Task SendMail()
     {
-        _lableCampaignLinkController.DeleteAllLabelsFromCampaign(campaign.Id);
+        await save();
+        await SendCampaign(contactCampaignLinks, lableCampaignLinks);
+    }
+
+    public async Task save()
+    {
+        await _lableCampaignLinkController.DeleteAllLabelsFromCampaign(campaign.Id);
         foreach (var link in lableCampaignLinks)
         {
-            _lableCampaignLinkController.AddLableCampaignLink(link);
+            await _lableCampaignLinkController.AddLableCampaignLink(link);
+        }
+        await _contactCampaignLinkController.DeleteAllContactsFromCampaign(campaign.Id);
+        foreach (var link in contactCampaignLinks)
+        {
+            await _contactCampaignLinkController.AddContactCampaignLink(link);
         }
     }
 
-    public void CheckBoxClicked(LableModel label, object checkedvalue)
+    public void LabelCheckBoxClicked(LableModel label, object checkedvalue)
     {
         if ((bool)checkedvalue)
         {
@@ -150,6 +199,18 @@ else
         else
         {
             lableCampaignLinks.RemoveAll(r => r.LabelId == label.LabelId);
+        }
+    }
+
+    public void ContactCheckBoxClicked(ContactModel contact, object checkedvalue)
+    {
+        if ((bool)checkedvalue)
+        {
+            contactCampaignLinks.Add(new ContactCampaignLink { CampaignId = campaign.Id, ContactId = contact.ContactId });
+        }
+        else
+        {
+            contactCampaignLinks.RemoveAll(r => r.ContactId == contact.ContactId);
         }
     }
 
@@ -169,6 +230,8 @@ else
     {
         campaign = await ApiKeyMailChimp.Manager.Campaigns.GetAsync(Id);
         lableCampaignLinks = await _lableCampaignLinkController.GetLableCampaignLinksFromCampaign(campaign.Id);
+        contactCampaignLinks = await _contactCampaignLinkController.GetContactCampaignLinksFromCampaign(campaign.Id);
+        contacts = await _contactController.GetContacts();
         labels = await _lableController.GetLabels();
         templates = await _templateController.GetAllTemplates();
         memberList = await _listController.GetDetailOfList(campaign.Recipients.ListId);
@@ -178,7 +241,11 @@ else
         newCampaign.FromName = campaign.Settings.FromName;
         if (memberList.CampaignDefaults is null)
         {
-            newCampaign.FromEmail = "";
+            newCampaign.FromEmail = "ChangeThis@gmail.com";
+            //memberList.CampaignDefaults.FromEmail = "ChangeThis@gmail.com";
+            //memberList.CampaignDefaults.FromName = "ChangeThis";
+            //memberList.CampaignDefaults.Language = "";
+            //memberList.CampaignDefaults.Subject = "";
         }
         else
         {
@@ -197,10 +264,56 @@ else
         campaign.Settings.SubjectLine = newCampaign.Subject;
         campaign.Settings.PreviewText = newCampaign.PreviewText;
         campaign.Settings.FromName = newCampaign.FromName;
-        memberList.CampaignDefaults.FromEmail = newCampaign.FromEmail;
+
+
+        memberList = await _listController.GetDetailOfList(campaign.Recipients.ListId);
+
+        memberList.CampaignDefaults = new MailChimp.Net.Models.CampaignDefaults
+        {
+            FromEmail = newCampaign.FromEmail,
+            FromName = newCampaign.FromName,
+            Language = "Dutch",
+            Subject = "Subject"
+        };
+        campaign.Settings.ReplyTo = memberList.CampaignDefaults.FromEmail;
+        //memberList.Contact = null;
+
+        //memberList.PermissionReminder = "Permission";
+        //memberList.Name = "Name";
+
+        //memberList.CampaignDefaults.FromEmail = newCampaign.FromEmail;
 
         await ApiKeyMailChimp.Manager.Lists.AddOrUpdateAsync(memberList);
         await ApiKeyMailChimp.Manager.Campaigns.AddOrUpdateAsync(campaign);
+    }
+
+    private async Task SendCampaign(List<ContactCampaignLink> contactLinks, List<LableCampaignLink> labelLinks)
+    {
+        List<ContactModel> contactList = new List<ContactModel>();
+        foreach (var link in contactLinks)
+        {
+            var contact = await _contactController.GetContact(link.ContactId);
+            if (!contactList.Contains(contact[0]))
+            {
+                contactList.Add(contact[0]);
+            }
+
+        }
+
+        foreach (var link in labelLinks)
+        {
+            var tempContactList = await _contactController.GetListOfContactsByLabelId(link.LabelId);
+
+            foreach (var contact in tempContactList)
+            {
+                if (!contactList.Contains(contact))
+                {
+                    contactList.Add(contact);
+                }
+            }
+        }
+
+        await _campaignController.AddListToCampaign(contactList, campaign);
     }
     //<a class="btn btn-primary" href="email_design" role="button">Choose Template</a>
 }

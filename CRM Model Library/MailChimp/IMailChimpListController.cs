@@ -8,5 +8,7 @@ namespace CRM_Model_Library
     {
         Task<IEnumerable<List>> GetAllLists();
         Task<List> GetDetailOfList(string id);
+        Task AddMemberToList();
+        Task AddMemberToList2();
     }
 }

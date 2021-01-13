@@ -5,6 +5,9 @@
 @inject IMailChimpTemplateController _controller
 
 
+@inject ICampaignController _campaignController
+@inject IMailChimpListController _listController
+
 <h1>Templates</h1>
 
 @if (templates is null)
@@ -12,7 +15,7 @@
     <p><em>Loading...</em></p>
 }
 else
-{  
+{
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
@@ -26,15 +29,15 @@ else
         <tbody>
             @foreach (var template in templates)
             {
-            <tr>
-                <td>@template.CreatedBy</td>
-                <td>@template.Name</td>
-                <td>@template.Id</td>
-                <td>@template.Type</td>
-                <td>@template.Thumbnail</td>
-                <td> <a href="https://us7.admin.mailchimp.com/templates/edit?id=@template.Id" target="_blank">View &raquo;</a></td>
+                <tr>
+                    <td>@template.CreatedBy</td>
+                    <td>@template.Name</td>
+                    <td>@template.Id</td>
+                    <td>@template.Type</td>
+                    <td>@template.Thumbnail</td>
+                    <td> <a href="https://us7.admin.mailchimp.com/templates/edit?id=@template.Id" target="_blank">View &raquo;</a></td>
 
-            </tr>
+                </tr>
             }
         </tbody>
     </table>
@@ -49,5 +52,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         templates = await _controller.GetAllTemplates();
+        //await _listController.AddMemberToList2();
+        await _campaignController.SendCampaign(new MailChimp.Net.Models.Campaign());
     }
 }

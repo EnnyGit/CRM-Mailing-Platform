@@ -9,5 +9,8 @@ namespace CRM_Model_Library
         Task CreateRegularCampaign(string campaignTitle);
         Task<IEnumerable<Campaign>> GetLatestCampaign();
         Task UpdateCampaign(Campaign campaign);
+        Task AddListToCampaign(List<ContactModel> contactList, Campaign campaign);
+        Task SendCampaign(Campaign campaign);
+        Task SendCampaign2(Campaign campaign);
     }
 }

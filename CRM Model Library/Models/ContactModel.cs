@@ -15,7 +15,17 @@ public class ContactModel
         return EmailAddress + FirstName + LastName;
     }
 
-
+    public string GetInfo(bool withemail = false)
+    {
+        if (withemail)
+        {
+            return FirstName + " " + LastName + ", " + EmailAddress;
+        }
+        else
+        {
+            return FirstName + " " + LastName;
+        }
+    }
     public override bool Equals(object obj)
     {
         if ((obj == null) || !this.GetType().Equals(obj.GetType()))

@@ -72,7 +72,7 @@
 
         string searchText = changeEventArgs.Value.ToString();
 
-        FilterContacts = Contacts.Where(c => c.SearchTerm().ToLower().Contains(searchText)).ToList();
+        FilterContacts = Contacts.Where(c => c.SearchTerm().Contains(searchText.ToLower())).ToList();
     }
 
 }

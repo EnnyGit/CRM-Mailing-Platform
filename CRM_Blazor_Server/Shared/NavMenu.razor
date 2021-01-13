@@ -1,6 +1,6 @@
 ﻿@inject LoginState loginState
 <div class="top-row pl-4 navbar navbar-dark ">
-    <a class="navbar-brand" href="">CRM_Blazor_Server</a>
+    <a class="navbar-brand" href="">Renvl</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,11 +21,6 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="statistics">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Statistics
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
             <NavLink class="nav-link" href="users">
                 <span class="oi oi-people" aria-hidden="true"></span> Users
             </NavLink>
@@ -42,4 +37,5 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+    
 }

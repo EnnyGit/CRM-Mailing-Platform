@@ -8,7 +8,7 @@
     <a class="btn btn-primary" href="manage/labels/create" role="button">Create</a>
 
 </div>
-<h3>Contacts</h3>
+<h3>Labels</h3>
 
 <ul class="nav nav-pills nav-justified">
     <li class="nav-item">
@@ -23,6 +23,7 @@
         <a class="nav-link active" href="manage/labels">lables</a>
     </li>
 </ul>
+<input class="form-control" placeholder="search" @oninput="(e => OnPublisherSearchTextChanged(e))" />
 <table class="table">
     <thead>
         <tr>
@@ -31,7 +32,7 @@
             <th scope="col">Go To</th>
         </tr>
     </thead>
-    @if (Label == null)
+    @if (Labels == null)
     {
         <tr>No labels</tr>
     }
@@ -39,7 +40,7 @@
     {
         var i = 1;
         <tbody>
-            @foreach (var model in Label)
+            @foreach (var model in Labels)
             {
 
                 <tr>
@@ -56,12 +57,20 @@
     }
 </table>
 @code {
-    private List<LabelModel> Label;
+    private List<LabelModel> Labels;
+    private List<LabelModel> FilterLabels;
+
     protected override async Task OnInitializedAsync()
     {
-        Label = await _db.GetLabels();
+        Labels = await _db.GetLabels();
     }
+    private void OnPublisherSearchTextChanged(ChangeEventArgs changeEventArgs)
+    {
 
+        string searchText = changeEventArgs.Value.ToString();
+
+        FilterLabels = Labels.Where(l => l.LabelName.Contains(searchText.ToLower())).ToList();
+    }
 
 
 }

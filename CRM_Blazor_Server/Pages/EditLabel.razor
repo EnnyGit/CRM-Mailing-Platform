@@ -1,0 +1,142 @@
+﻿@page "/manage/labels/viewlabel/{Id}/editlabel"
+
+@using CRM_Model_Library
+@using CRM_Blazor_Server.ViewModels
+
+@inject ILabelData _db
+@inject IContactData _db2
+@inject IDataAccess _DataAccess
+@inject NavigationManager NavigationManager
+<div style="float:right;font-size:150%">
+    <h1>Add Contacts</h1>
+    @if (Contacts == null)
+    {
+        <p>loading...</p>
+    }
+    else
+    {
+
+        @foreach (var contact in Cexcept)
+        {
+            <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(contact, eventArgs.Value); }" />@contact.FirstName; @contact.LastName;<br />
+
+
+
+        }
+        <button type="button" class="btn btn-primary" @onclick="SubmitSelected">Submit</button>
+
+
+    }
+</div>
+<div>
+    @if (Label != null)
+    {
+        <h1>@Label.LabelName</h1>
+
+    }
+    else
+    {
+        <p>Loading...</p>
+    }
+    @if (ContactsWithLabel != null)
+    {
+        <h4>Delete Contacts:</h4>
+        
+            @foreach (var contact in ContactsWithLabel)
+            {
+
+                <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedDel(contact, eventArgs.Value); }" />@contact.FirstName @contact.LastName<br />
+            }
+        
+    }
+    
+    <a class="btn btn-primary" href="manage/labels/viewlabel/@Id.ToString()" role="button">Back</a>
+</div>
+@code{
+    [Parameter]
+    public string Id { get; set; }
+    private LabelModel Label;
+    private List<ContactModel> ContactsWithLabel;
+    private List<ContactModel> Contacts;
+    private List<ContactModel> AddSelected;
+    private List<ContactModel> DelSelected;
+    private List<ContactModel> Cexcept;
+    protected override async Task OnInitializedAsync()
+    {
+        List<LabelModel> rep = await _db.GetLabel(Int32.Parse(Id));
+
+        Label = rep[0];
+        ContactsWithLabel = await _db.GetContactsWithLabel(Label.LabelId);
+        Contacts = await _db2.GetContacts();
+        AddSelected = new List<ContactModel>();
+        DelSelected = new List<ContactModel>();
+        AssingCexcept();
+    }
+    protected List<ContactModel> AssingCexcept()
+    {
+        List<ContactModel> res = new List<ContactModel>();
+        int i = 0;
+        List<int> ids = new List<int>();
+        ids = ContactsWithLabel.Select(x => x.ContactId).ToList();
+        while (i < Contacts.Count)
+        {
+            if (!(ids.Contains(Contacts[i].ContactId)))
+            {
+                res.Add(Contacts[i]);
+            }
+            i++;
+        }
+        Cexcept = res;
+        return Cexcept;
+
+    }
+    public void CheckBoxClicked(ContactModel contact, object checkedvalue)
+    {
+        if ((bool)checkedvalue)
+        {
+            if (!AddSelected.Contains(contact))
+            {
+                AddSelected.Add(contact);
+            }
+        }
+        else
+        {
+            if (AddSelected.Contains(contact))
+            {
+                AddSelected.Remove(contact);
+            }
+        }
+    }
+    public void CheckBoxClickedDel(ContactModel contact, object checkedvalue)
+    {
+        if ((bool)checkedvalue)
+        {
+            if (!DelSelected.Contains(contact))
+            {
+                DelSelected.Add(contact);
+            }
+        }
+        else
+        {
+            if (DelSelected.Contains(contact))
+            {
+                DelSelected.Remove(contact);
+            }
+        }
+    }
+    public async Task SubmitSelected()
+    {
+        foreach (var contact in AddSelected)
+        {
+            await _db.InsertLink(Label.LabelId,contact.ContactId);
+        }
+        foreach (var contact in DelSelected)
+        {
+            await _db.DeleteLink(Label.LabelId, contact.ContactId);
+        }
+        AddSelected = new List<ContactModel>();
+        DelSelected = new List<ContactModel>();
+        NavigationManager.NavigateTo(NavigationManager.Uri,forceLoad:true);
+    }
+
+}

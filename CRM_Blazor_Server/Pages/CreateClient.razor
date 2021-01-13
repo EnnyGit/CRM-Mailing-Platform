@@ -1,7 +1,7 @@
 ﻿@page "/manage/clients/create"
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
-
+@inject NavigationManager NavigationManager
 @inject IClientData _db
 
 <h3>Create Client</h3>
@@ -25,12 +25,14 @@
         ClientModel Client = new ClientModel
         {
             Name = newclient.Name
-            
+
         };
 
         await _db.InsertClient(Client);
 
         newclient = new DisplayClientModel();
+        NavigationManager.NavigateTo("manage/clients", forceLoad: true);
+
     }
 }
 

@@ -1,0 +1,44 @@
+﻿@page "/manage/labels/viewlabel/{Id}"
+
+@using CRM_Model_Library
+@using CRM_Blazor_Server.ViewModels
+
+@inject ILabelData _db
+@inject IDataAccess _DataAccess
+
+@if (Label != null)
+{
+    <h1>@Label.LabelName</h1>
+
+}
+else
+{
+    <p>Loading...</p>
+}
+@if (Contacts != null)
+{
+    <h4>Contacts:</h4>
+    <ul>
+        @foreach (var contact in Contacts)
+        {
+            <li>@contact.FirstName @contact.LastName, @contact.EmailAddress</li>
+
+        }
+    </ul>
+}
+<a class="btn btn-primary" href="manage/labels" role="button">Back</a>
+<a class="btn btn-primary" href="manage/labels/viewlabel/@Id.ToString()/editlabel" role="button">Add labels</a>
+@code{
+    [Parameter]
+    public string Id { get; set; }
+    private LabelModel Label;
+    private List<ContactModel> Contacts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        List<LabelModel> rep = await _db.GetLabel(Int32.Parse(Id));
+
+        Label = rep[0];
+        Contacts = await _db.GetContactsWithLabel(Label.LabelId);
+    }
+}

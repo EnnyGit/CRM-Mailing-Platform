@@ -1,30 +1,67 @@
-﻿@page "/manage/lables"
+﻿@page "/manage/labels"
+@using CRM_Model_Library
+@using CRM_Blazor_Server.ViewModels
+@inject ILabelData _db
+
 <div style="align-items:end; float:right;">
-    <a class="btn btn-primary" href="manage/lables/create" role="button">Create</a>
+
+    <a class="btn btn-primary" href="manage/labels/create" role="button">Create</a>
+
 </div>
-<h3>lables</h3>
+<h3>Contacts</h3>
+
 <ul class="nav nav-pills nav-justified">
     <li class="nav-item">
-        <a class="nav-link" href="manage/contacts">Contacts</a>
+        <a class="nav-link " href="manage/contacts">Contacts</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="manage/clients">Clients</a>
     </li>
-    
+
     <li class="nav-item">
-        <a class="nav-link active" href="manage/lables">lables</a>
+
+        <a class="nav-link active" href="manage/labels">lables</a>
     </li>
 </ul>
-<div class="model-group">
-    @foreach (var lable in lables)
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Go To</th>
+        </tr>
+    </thead>
+    @if (Label == null)
     {
-        <div class="model-item">
-            <div class="lable-model-title">
-                <h3 class="model-title">@lable.Name</h3>
-            </div>
-        </div>
+        <tr>No labels</tr>
     }
-</div>
+    else
+    {
+        var i = 1;
+        <tbody>
+            @foreach (var model in Label)
+            {
+
+                <tr>
+                    <td scope="row">@i</td>
+                    <td>@model.LabelName</td>
+                    <td><a class="btn btn-primary" href="manage/labels/viewlabel/@model.LabelId.ToString()" role="button">Go To</a></td>
+                </tr>
+
+                i++;
+            }
+
+
+        </tbody>
+    }
+</table>
 @code {
-    List<LableModel> lables = new List<LableModel> { new LableModel { lableId = 1, Name = "Programmer" }, new LableModel { lableId = 2, Name = "Designer" }, new LableModel { lableId = 3, Name = "Consultant" }, new LableModel { lableId = 4, Name = "Recruiter" } };
+    private List<LabelModel> Label;
+    protected override async Task OnInitializedAsync()
+    {
+        Label = await _db.GetLabels();
+    }
+
+
+
 }

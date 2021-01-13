@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace CRM_Model_Library
 {
-    public class LableData : ILableData
+    public class LabelData : ILabelData
     {
         private readonly IDataAccess _db;
 
-        public LableData(IDataAccess db)
+        public LabelData(IDataAccess db)
         {
             _db = db;
         }

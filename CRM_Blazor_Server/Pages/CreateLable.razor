@@ -3,7 +3,6 @@
 @using CRM_Blazor_Server.ViewModels
 @inject ILabelData _db
 @inject NavigationManager NavigationManager
-
 <h3>Create Label</h3>
 <EditForm Model="@newlabel" OnSubmit="@InsertLabel">
     <div class="form-group">
@@ -18,7 +17,6 @@
         <a href="manage/labels" class="btn btn-primary" type="Continue">Back</a>
     </div>
 </EditForm>
-
 @code {
     private DisplayLabelModel newlabel = new DisplayLabelModel();
 

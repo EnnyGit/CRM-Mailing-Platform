@@ -6,7 +6,7 @@
 @inject IMailChimpController _controller
 @inject IMailChimpListController _listController
 @inject IMailChimpTemplateController _templateController
-@inject ILableData _lableController
+@inject ILabelData _lableController
 @inject ILabelCampaignLinkData _lableCampaignLinkController
 @inject IContactCampaignLinkData _contactCampaignLinkController
 @inject ICampaignController _campaignController
@@ -119,7 +119,7 @@ else
     private static IEnumerable<MailChimp.Net.Models.Template> templates;
     private List<ContactModel> contacts;
     private List<ContactCampaignLink> contactCampaignLinks;
-    private List<LableModel> labels;
+    private List<LabelModel> labels;
     private List<LableCampaignLink> lableCampaignLinks;
     private int templateId;
 
@@ -193,7 +193,7 @@ else
         }
     }
 
-    public void LabelCheckBoxClicked(LableModel label, object checkedvalue)
+    public void LabelCheckBoxClicked(LabelModel label, object checkedvalue)
     {
         if ((bool)checkedvalue)
         {
@@ -281,7 +281,7 @@ else
 
         foreach (var link in labelLinks)
         {
-            var tempContactList = await _contactController.GetListOfContactsByLabelId(link.LabelId);
+            var tempContactList = await _lableController.GetContactsWithLabel(link.LabelId);
 
             foreach (var contact in tempContactList)
             {

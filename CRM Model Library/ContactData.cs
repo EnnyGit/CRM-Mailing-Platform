@@ -47,7 +47,7 @@ namespace CRM_Model_Library
 
         public Task<List<ContactModel>> GetListOfContactsByLabelId(int labelId)
         {
-            string sql = "SELECT * FROM dbo.ContactLabelLink WHERE LabelId = @id";
+            string sql = "SELECT * FROM dbo.ContactLabelLink WHERE LabelId = @Id";
             return _db.LoadData<ContactModel, dynamic>(sql, new { Id = labelId });
         }
 

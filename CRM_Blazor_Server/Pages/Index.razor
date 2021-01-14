@@ -1,40 +1,59 @@
 ﻿@page "/"
 
-@inject LoginState loginState;
-@inject IUserData _db
+@using CRM_Model_Library
+
+@inject IMailChimpController _controller
 
 
+<h1>Campaigns</h1>
 
-    <div>
-        <a class="btn-link" href="create_mail">Create Mail</a>
-    </div>
-    <table class="table">
+<a class="btn btn-primary" href="/create_mail" style="float:left;margin-right: 1%;">Create Campaign</a>
+
+@if (campaigns is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Received</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Time</th>
+                <th>Name</th>
+                <th>Sent on</th>
+                <th>Created</th>
+                <th>From</th>
+                <th>View mail</th>
             </tr>
         </thead>
         <tbody>
-            @for (int i = 1; i < Names.Count + 1; i++)
+            @foreach (var campaign in campaigns)
             {
-                <tr>
-                    <th scope="row">@i</th>
-                    <td>@Names[i - 1]</td>
-                    <td>subject</td>
-                    <td>1-1-2020 10:10</td>
-                </tr>
+            <tr>
+                <td>@campaign.Settings.Title</td>
+                <td>@campaign.SendTime</td>
+                <td>@campaign.CreateTime</td>
+                <td>@campaign.Settings.FromName</td>
+                <td> <a href="@campaign.ArchiveUrl" target="_blank">View &raquo;</a></td>
+                @if (campaign.Status != "sent")
+                {
+                    <td> <a class="btn btn-primary" href="update_campaign/@campaign.Id.ToString()" role="button" style="float:left;margin-right: 1%;">Edit</a></td>
+                }
+                else
+                {
+                    <td> <a class="btn btn-primary" href="https://us7.admin.mailchimp.com/campaigns/show?id=@campaign.WebId" target="_blank" role="button" style="float:left;margin-right: 1%;">Report</a></td>
+                }
+
+            </tr>
             }
         </tbody>
     </table>
-
-
-@code {
-
-    
-    List<string> Names = new List<string> { "Jonas de Boer", "Enny Adeoye", "Dennis Futselaar", "Ali Aliawi", "Ilias El Bouchtaoui" };
-
 }
 
+@code{
+    private IEnumerable<MailChimp.Net.Models.Campaign> campaigns;
+
+    protected override async Task OnInitializedAsync()
+    {
+        campaigns = await _controller.SentCampaigns();
+    }
+}

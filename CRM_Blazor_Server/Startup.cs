@@ -21,15 +21,12 @@ namespace CRM_Blazor_Server
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddProtectedBrowserStorage();
-            // TODO: Uitzoeken welke service wij moeten gebruiken. Inplaats  van "AddSingleton", kijk naar AddTransient.
-            // Transient is gonna create an instance everytime we ask for one, Singleton creates one instance for the entire application.
+
             services.AddSingleton<IDataAccess, DataAccess>();
             services.AddTransient<IClientData, ClientData>();
             services.AddTransient<IContactData, ContactData>();
@@ -38,9 +35,15 @@ namespace CRM_Blazor_Server
             services.AddScoped<LoginState>();
             services.AddTransient<ILabelData, LabelData>();
 
+
+            services.AddTransient<IMailChimpController, MailChimpController>();
+            services.AddTransient<IMailChimpListController, MailChimpListController>();
+            services.AddTransient<ICampaignController, CampaignController>();
+            services.AddTransient<IMailChimpTemplateController, MailChimpTemplateController>();
+            services.AddTransient<ILabelCampaignLinkData, LabelCampaignLinkData>();
+            services.AddTransient<IContactCampaignLinkData, ContactCampaignLinkData>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

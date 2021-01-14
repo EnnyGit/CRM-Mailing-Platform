@@ -1,0 +1,39 @@
+﻿@page "/create_mail"
+
+@using CRM_Model_Library
+@using MailChimp.Net;
+@using CRM_Blazor_Server.ViewModels
+
+@inject ICampaignController _controller
+@inject NavigationManager NavigationManager
+
+<h3>Creating Campaign</h3>
+<p>
+    <br />
+    <div>
+        <label>Enter Campaign title: </label>
+        <input type="text" @bind="campaignTitle">
+    </div>
+    <br />
+    <button class="btn btn-primary" type="submit" @onclick="@CreateCampaignWithTitle">Confirm Name</button>
+    <a class="btn btn-primary" href="#" role="button" style="float:left;margin-right: 1%;">Back</a>
+</p>
+
+
+@code {
+    private static MailChimp.Net.Models.Campaign campaign;
+    string campaignTitle;
+
+    protected async Task CreateCampaignWithTitle()
+    {
+        await _controller.CreateRegularCampaign(campaignTitle);
+        var campaignList = await _controller.GetLatestCampaign();
+
+        foreach (var c in campaignList)
+        {
+            campaign = c;
+        }
+        NavigationManager.NavigateTo($"update_campaign/{campaign.Id.ToString()}", true);
+    }
+
+}

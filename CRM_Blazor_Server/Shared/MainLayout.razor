@@ -160,7 +160,7 @@
             {
                 FirstName = newuser.FirstName,
                 LastName = newuser.LastName,
-                Email = newuser.Email,
+                EmailAddress = newuser.Email,
                 Password = newuser.Password
             };
 
@@ -176,7 +176,7 @@
     {
         foreach (var user in Users)
         {
-            if (newuser.Email == user.Email)
+            if (newuser.Email == user.EmailAddress)
             {
 
                 return false;

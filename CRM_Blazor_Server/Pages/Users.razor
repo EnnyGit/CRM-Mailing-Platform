@@ -41,7 +41,7 @@ else
                 <tr>
                     <td>@user.FirstName</td>
                     <td>@user.LastName</td>
-                    <td>@user.Email</td>
+                    <td>@user.EmailAddress</td>
                 </tr>
             }
         </tbody>
@@ -64,7 +64,7 @@ else
         {
             FirstName = newUser.FirstName,
             LastName = newUser.LastName,
-            Email = newUser.Email,
+            EmailAddress = newUser.Email,
             Password = newUser.Password
         };
 
@@ -74,4 +74,5 @@ else
 
         newUser = new DisplayUserModel();
     }
+
 }

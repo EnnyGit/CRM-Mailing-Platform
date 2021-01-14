@@ -69,7 +69,7 @@
 
         string searchText = changeEventArgs.Value.ToString();
 
-        FilterLabels = Labels.Where(l => l.LabelName.Contains(searchText.ToLower())).ToList();
+        FilterLabels = Labels.Where(l => l.LabelName.Contains(searchText)).ToList();
     }
 
 

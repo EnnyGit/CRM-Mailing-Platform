@@ -17,10 +17,10 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="manage/labels">labels</a>
+        <a class="nav-link" href="manage/Labels">Labels</a>
     </li>
 </ul>
-<input class="form-control" placeholder="search" @oninput="(e => OnPublisherSearchTextChanged(e))" />
+
 <table class="table">
     <thead>
         <tr>
@@ -29,17 +29,17 @@
 
         </tr>
     </thead>
-    @if (FilterClients == null)
+    @if (Clients == null)
     {
         <tr>loading...</tr>
     }
     else
     {
         <tbody>
-            @{
+            @{ 
                 var i = 1;
             }
-            @foreach (var client in FilterClients)
+            @foreach (var client in Clients)
             {
                 <tr>
                     <th scope="row">@i</th>
@@ -51,23 +51,15 @@
 
         </tbody>
     }
-</table>
+    </table>
 
 @code {
     private List<ClientModel> Clients;
-    private List<ClientModel> FilterClients;
     protected override async Task OnInitializedAsync()
     {
         Clients = await _db.GetClients();
-        FilterClients = Clients;
     }
-    private void OnPublisherSearchTextChanged(ChangeEventArgs changeEventArgs)
-    {
 
-        string searchText = changeEventArgs.Value.ToString();
-
-        FilterClients = Clients.Where(c => c.SearchTerm().Contains(searchText.ToLower())).ToList();
-    }
 
 
 }

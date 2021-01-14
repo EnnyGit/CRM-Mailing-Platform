@@ -1,76 +1,37 @@
-﻿﻿@page "/manage/labels"
+﻿@page "/manage/Labels"
+
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
-@inject ILabelData _db
 
 <div style="align-items:end; float:right;">
-
-    <a class="btn btn-primary" href="manage/labels/create" role="button">Create</a>
-
+    <a class="btn btn-primary" href="manage/Labels/create" role="button">Create</a>
 </div>
 <h3>Labels</h3>
-
 <ul class="nav nav-pills nav-justified">
     <li class="nav-item">
-        <a class="nav-link " href="manage/contacts">Contacts</a>
+        <a class="nav-link" href="manage/contacts">Contacts</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="manage/clients">Clients</a>
     </li>
 
     <li class="nav-item">
-
-        <a class="nav-link active" href="manage/labels">lables</a>
+        <a class="nav-link active" href="manage/Labels">Labels</a>
     </li>
 </ul>
-<input class="form-control" placeholder="search" @oninput="(e => OnPublisherSearchTextChanged(e))" />
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Go To</th>
-        </tr>
-    </thead>
-    @if (Labels == null)
+<div class="model-group">
+    @foreach (var Label in Labels)
     {
-        <tr>No labels</tr>
+        <div class="model-item">
+            <div class="Label-model-title">
+                <h3 class="model-title">@Label.LabelName</h3>
+            </div>
+        </div>
     }
-    else
-    {
-        var i = 1;
-        <tbody>
-            @foreach (var model in Labels)
-            {
-
-                <tr>
-                    <td scope="row">@i</td>
-                    <td>@model.LabelName</td>
-                    <td><a class="btn btn-primary" href="manage/labels/viewlabel/@model.LabelId.ToString()" role="button">Go To</a></td>
-                </tr>
-
-                i++;
-            }
-
-
-        </tbody>
-    }
-</table>
+</div>
 @code {
-    private List<LabelModel> Labels;
-    private List<LabelModel> FilterLabels;
-
-    protected override async Task OnInitializedAsync()
-    {
-        Labels = await _db.GetLabels();
-    }
-    private void OnPublisherSearchTextChanged(ChangeEventArgs changeEventArgs)
-    {
-
-        string searchText = changeEventArgs.Value.ToString();
-
-        FilterLabels = Labels.Where(l => l.LabelName.Contains(searchText.ToLower())).ToList();
-    }
-
-
+    List<LableModel> Labels = new List<LableModel> { new LableModel { LabelId = 1, LabelName = "Programmer" },
+        new LableModel { LabelId = 2, LabelName = "Designer" },
+        new LableModel { LabelId = 3, LabelName = "Consultant" },
+        new LableModel { LabelId = 4, LabelName = "Recruiter" } };
 }

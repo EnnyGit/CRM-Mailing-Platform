@@ -1,4 +1,4 @@
-﻿﻿public class ContactLabelLink
+﻿public class ContactLabelLink
 {
     public int LabelId { get; set; }
 

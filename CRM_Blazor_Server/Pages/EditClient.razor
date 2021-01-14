@@ -7,17 +7,8 @@
 @inject IContactData _db2
 @inject IDataAccess _DataAccess
 @inject NavigationManager NavigationManager
-@if (Client != null)
-{
-    <h1>@Client.Name</h1>
-
-}
-else
-{
-    <p>Loading...</p>
-}
-<div style="float:right;font-size:125%">
-    <h4>Add Contacts</h4>
+<div style="float:right;font-size:150%">
+    <h1>Add Contacts</h1>
     @if (Contacts == null)
     {
         <p>loading...</p>
@@ -27,7 +18,7 @@ else
 
         @foreach (var contact in Cexcept)
         {
-            <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(contact, eventArgs.Value); }" />@contact.GetInfo()<br />
+            <input type="checkbox" @onchange="eventArgs => { CheckBoxClicked(contact, eventArgs.Value); }" />@contact.FirstName @contact.LastName<br />
 
 
 
@@ -37,20 +28,28 @@ else
 
     }
 </div>
-<div style="font-size:125%">
+<div>
+    @if (Client != null)
+    {
+        <h1>@Client.Name</h1>
 
+    }
+    else
+    {
+        <p>Loading...</p>
+    }
     @if (ContactsOfClient != null)
     {
         <h4>Delete Contacts:</h4>
+        
+            @foreach (var contact in ContactsOfClient)
+            {
 
-        @foreach (var contact in ContactsOfClient)
-        {
-
-            <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedDel(contact, eventArgs.Value); }" />@contact.GetInfo()<br />
-        }
-
+                <input type="checkbox" @onchange="eventArgs => { CheckBoxClickedDel(contact, eventArgs.Value); }" />@contact.FirstName @contact.LastName<br />
+            }
+        
     }
-
+    
     <a class="btn btn-primary" href="manage/clients/viewclient/@Id.ToString()" role="button">Back</a>
 </div>
 @code{
@@ -129,7 +128,7 @@ else
     {
         foreach (var contact in AddSelected)
         {
-            await _db.InsertLink(Client.ClientId, contact.ContactId);
+            await _db.InsertLink(Client.ClientId,contact.ContactId);
         }
         foreach (var contact in DelSelected)
         {
@@ -137,7 +136,7 @@ else
         }
         AddSelected = new List<ContactModel>();
         DelSelected = new List<ContactModel>();
-        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        NavigationManager.NavigateTo(NavigationManager.Uri,forceLoad:true);
     }
 
 }

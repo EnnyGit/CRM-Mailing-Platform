@@ -1,34 +1,26 @@
-﻿﻿@page "/manage/labels/create"
+﻿@page "/manage/Labels/create"
+
 @using CRM_Model_Library
 @using CRM_Blazor_Server.ViewModels
-@inject ILabelData _db
-@inject NavigationManager NavigationManager
+
 <h3>Create Label</h3>
-<EditForm Model="@newlabel" OnSubmit="@InsertLabel">
+<EditForm Model="Label" OnSubmit="Create">
     <div class="form-group">
         <lable>Name:</lable>
     </div>
     <div>
-        <InputText class="form-control" @bind-Value="newlabel.LabelName"></InputText>
+        <InputText class="form-control" @bind-Value="@Label.LabelName"></InputText>
     </div>
-    <br />
     <div>
-        <button class="btn btn-success" type="submit">Create label</button>
-        <a href="manage/labels" class="btn btn-primary" type="Continue">Back</a>
+        <a href="manage/Labels" class="btn btn-success" type="submit">Create Label</a>
     </div>
 </EditForm>
 @code {
-    private DisplayLabelModel newlabel = new DisplayLabelModel();
+    LableModel Label = new LableModel();
 
-    private async Task InsertLabel()
+    private void Create()
     {
 
-        LabelModel Label = new LabelModel
-        {
-            LabelName = newlabel.LabelName
-        };
-        await _db.InsertLabel(Label);
-        newlabel = new DisplayLabelModel();
-        NavigationManager.NavigateTo("manage/labels", forceLoad: true);
+        return;
     }
 }

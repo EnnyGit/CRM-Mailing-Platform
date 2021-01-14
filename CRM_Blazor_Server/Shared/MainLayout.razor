@@ -28,7 +28,10 @@
             </div>
             <div style="text-align:center">
                 <button type="submit" @onclick=@HandleLogin>
-                    Submit
+                    Login
+                </button>
+                <button type="button" @onclick="@SwitchRegister">
+                    Register
                 </button>
             </div>
 
@@ -76,7 +79,7 @@
     string password = "";
     string message = "";
     static UserModel u = null;
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
 
@@ -132,7 +135,7 @@
 
 
     }
-    
+
     protected override void OnInitialized()
     {
         loginState.OnChange += StateHasChanged;
@@ -166,6 +169,7 @@
 
             newuser = new DisplayUserModel();
             SwitchRegister();
+            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
         }
     }
 

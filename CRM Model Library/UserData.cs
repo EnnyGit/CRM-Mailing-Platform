@@ -21,8 +21,8 @@ namespace CRM_Model_Library
 
         public Task InsertUser(UserModel user)
         {
-            string sql = @"INSERT INTO dbo.Users(FirstName, LastName, Email, Password)
-                           values (@FirstName, @LastName, @Email, @Password);";
+            string sql = @"INSERT INTO dbo.Users(FirstName, LastName, EmailAddress, Password)
+                           values (@FirstName, @LastName, @EmailAddress, @Password);";
 
             return _db.SaveData(sql, user);
         }
@@ -33,8 +33,8 @@ namespace CRM_Model_Library
         }
         public Task<List<UserModel>> FindUser(string email)
         {
-            string sql = "SELECT * FROM dbo.Users WHERE Email = @Email";
-            return _db.LoadData<UserModel, dynamic>(sql, new { Email = email });
+            string sql = "SELECT * FROM dbo.Users WHERE EmailAddress = @EmailAddress";
+            return _db.LoadData<UserModel, dynamic>(sql, new { EmailAddress = email });
 
         }
     }
